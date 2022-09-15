@@ -18,6 +18,8 @@ import InterestsC from './InterestsC'
 import Hero from './Hero'
 import AboutMe from './aboutMe/AboutMe'
 import MainBlog from './blog/MainBlog'
+import LoadingPage from '../LoadingPage'
+import Footer from './Footer'
 
 export default class Body extends Component {
   constructor(props) {
@@ -27,20 +29,8 @@ export default class Body extends Component {
       userData: '',
       profile: '',
       aboutMe: '',
-      blogs: ''
-    }
-  }
-
-  getUserInfo = async () => {
-    const userId = this.props.userLayout.user
-    const url = `${process.env.REACT_APP_SERVER}user/${userId}`
-    // const url =  `http://localhost:3002/${userId}`
-    // i'll wanna make request to server/:id, i'll get id from auth0 when i implement it, until then use mine
-    try {
-      const response = await axios.get(url)
-      this.setState({ userData: response.data })
-    } catch (error) {
-      console.log(error.message)
+      blogs: '',
+      isSiteLoading: ''
     }
   }
 
@@ -64,50 +54,56 @@ export default class Body extends Component {
     }
   }
 
-  getBlogs = async () => {
+  getAllRequestInfo = async () => {
+    let urlArr = []
     const userId = this.props.userLayout.user
-    const url = `${process.env.REACT_APP_SERVER}${userId}/entries`
+    const userInfoUrl = `${process.env.REACT_APP_SERVER}user/${userId}`
+    const profileUrl = `${process.env.REACT_APP_SERVER}profile/${userId}`
+    const aboutMeUrl = `${process.env.REACT_APP_SERVER}aboutme/${userId}`
+    const blogsUrl = `${process.env.REACT_APP_SERVER}${userId}/entries`
+    urlArr.push(userInfoUrl, profileUrl, aboutMeUrl, blogsUrl)
+
     try {
-      await axios.get(url).then(res => this.setState({blogs: res.data}))
+      await axios.all(urlArr.map((url) => axios.get(url))).then(axios.spread(
+        (userData, profile, aboutMe, blogs) => {
+          this.setState({ userData: userData.data[0] })
+          this.setState({ profile: profile.data[0] })
+          this.setState({ aboutMe: aboutMe.data[0] })
+          this.setState({ blogs: blogs.data })
+        }
+      ))
     } catch (error) {
-      console.log(error.message)
+      console.log(error)
     }
   }
 
   componentDidMount = () => {
-    this.getUserInfo()
-    this.getProfile()
-    this.getAboutMe()
-    this.getBlogs()
+    this.setState({ isSiteLoading: true })
+    this.props.userLayout && this.getAllRequestInfo()
+    this.setState({ isSiteLoading: false })
   }
 
   render() {
     const { _id, username } = this.state.userData
-    const { userLayout } = this.props
+    const { userLayout, logout, userInfoAuth } = this.props
     const { profile, aboutMe, blogs } = this.state
     return (
       <>
-        <div className='body-container'
+        {this.state.isSiteLoading ? <LoadingPage /> : <div className='body-container'
           style={{
             backgroundColor: userLayout ? userLayout.backColor : '#fff',
             backgroundImage: userLayout ? `url(${userLayout.backImage})` : 'none',
             color: userLayout ? userLayout.fontBodyColor : 'black',
           }}>
-          <Navigation username={username} />
-          {/*i'll pass bio/profilepic/mood later */}
-          {/* {profile !== '' &&
-            <Profile key={_id}
-              id={_id}
-              username={username}
-              profilePic={ProfilePic}
-              profile={profile} />} */}
-          {profile !== '' && <Profile id={_id} profile={profile} />}
+          {userLayout && <Navigation userLayout={userLayout} logout={logout} username={username} />}
+          {profile !== '' && <Profile getProfile={this.getProfile} userInfoAuth={userInfoAuth} id={userLayout.user} profile={profile} />}
           <Contact />
           {userLayout && <InterestsC interests={aboutMe.interests} />}
           {userLayout && <Hero userLayout={userLayout} />}
-          {aboutMe !== '' && <AboutMe aboutMe={aboutMe} getAboutMe={this.getAboutMe} id={_id} />}
+          {aboutMe !== '' && <AboutMe aboutMe={aboutMe} getAboutMe={this.getAboutMe} id={userLayout.user} />}
           {blogs !== '' && <MainBlog blogs={blogs} id={_id} />}
-        </div>
+          <Footer/>
+        </div>}
       </>
     )
   }

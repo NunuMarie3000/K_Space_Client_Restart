@@ -48,7 +48,7 @@ export default function NewBlogEntry({ isAddBtnClicked, handleClick, author, get
 
             <Form.Group className="mb-3" controlId="post_body">
               <Form.Label>Body</Form.Label>
-              <Form.Control type="text" required placeholder='I crafted a beautiful painting!' onChange={(e)=>setBody(e.target.value)} />
+              <Form.Control as="textarea" rows={3}  type="text" required placeholder='I crafted a beautiful painting!' onChange={(e)=>setBody(e.target.value)} />
             </Form.Group>
 
             <Button variant="primary" type="submit">
