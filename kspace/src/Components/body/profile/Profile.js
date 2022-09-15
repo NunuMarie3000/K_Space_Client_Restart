@@ -5,7 +5,7 @@
 import React, { useState } from 'react'
 import EditProfile from './EditProfile'
 
-export default function Profile({ id, username, profilePic, profile }) {
+export default function Profile({ id, profile, userInfoAuth, getProfile }) {
   const [isEditBtnClicked, setIsEditBtnClicked] = useState('')
 
   const handleClick = () => {
@@ -14,23 +14,21 @@ export default function Profile({ id, username, profilePic, profile }) {
 
   return (
     <>
-      <div className='profile-container' style={{ border: '2px solid black' }}>
-        {/* <h1>{username}</h1> */}
+      <div className='profile-container' style={{ border: '2px solid black', borderRadius: '4%/5%' }}>
+        <h1 style={{fontFamily:"'Michroma', sans-serif", fontSize:'30px'}}>{profile.username && profile.username !== ' ' ? profile.username : userInfoAuth.name}</h1>
         {/*profile pic */}
-        <div style={{display:'flex'}}>
-        <img style={{ width: '250px', height: '150px' }} className='profile-pic'
-          alt='a profile'
-        />
-
-        {/*bio/mood/profilepic will come later, they need to create an account and create a bio after, this'll be saved in userInfo collection in db */}
-        {/*bio */}
-        <p>{profile.profile}</p>
+        <div style={{ display: 'flex', gap:'10px' }}>
+          <img style={{ width: '250px', height: '150px', borderRadius: '2%' }} className='profile-pic'
+            alt='a profile' src={profile.profilePic ? profile.profilePic : userInfoAuth.picture}
+          />
+          {/*bio */}
+          <p>{profile.profile}</p>
         </div>
         {/*mood */}
         <h5>{profile.mood}</h5>
         <div className='edit-me-brackets' onClick={handleClick}>[Edit Me]</div>
 
-        <EditProfile isEditBtnClicked={isEditBtnClicked} handleClick={handleClick} id={id} profile={profile.profile} mood={profile.mood} />
+        <EditProfile authProfilePic={userInfoAuth.picture} authUsername={userInfoAuth.name} username={profile.username} profilePic={profile.profilePic} getProfile={getProfile} isEditBtnClicked={isEditBtnClicked} handleClick={handleClick} id={id} profile={profile.profile} mood={profile.mood} />
 
       </div>
     </>

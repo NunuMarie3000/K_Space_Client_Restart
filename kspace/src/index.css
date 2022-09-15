@@ -4,12 +4,23 @@
 items in this grid: 
 -
 */
+
+.login-page,
+.loading-page{
+  font-family: 'Michroma', sans-serif;
+  display: flex;
+  flex-direction: column;
+  padding: 5vh 5vw;
+  justify-content: center;
+  background-color: aqua;
+  height: 100vh;
+}
 .Edit-button:hover{
   cursor: pointer;
 }
 .body-container{
   display: grid;
-  grid-template-rows: repeat(3, 1.75rem) 2rem repeat(4, 1fr) 4rem;
+  grid-template-rows: repeat(3, 1.75rem) 2rem 1fr .5fr .25rem 1fr 2rem;
   grid-template-columns: .5fr 1fr 1fr;
   row-gap: 10px;
   column-gap: 15px;
@@ -28,6 +39,9 @@ items in this grid:
   grid-row: 3/4;
   grid-column: 1/4;
 }
+button{
+  font-family: 'Michroma', sans-serif;
+}
 nav{
   display: flex;
   justify-content: space-between;
@@ -39,14 +53,18 @@ nav{
 .profile-container{
   grid-row: 4/6;
   grid-column: 1/2;
+  padding: 1rem .5rem;
 }
 .contact-container{
-  grid-row: 6/8;
+  grid-row: 6/7;
   grid-column: 1/2;
+  padding: 1rem .5rem;
+
 }
 .interests-container{
   grid-row: 8/9;
   grid-column: 1/2;
+  padding: 1rem .5rem;
 }
 .hero-container{
   grid-row: 4/7;
@@ -55,12 +73,19 @@ nav{
 .about-me-container{
   grid-row: 4/7;
   grid-column: 3/5;
+  padding: 1rem .5rem;
 }
 .main-latest-blog{
   grid-row: 7/9;
   grid-column: 2/5;
+  padding: 1rem .5rem;
 }
-
+footer{
+  font-family: 'Michroma', sans-serif;
+  text-align: right;
+  grid-row: 9/11;
+  grid-column: 1/5;
+}
 i:hover{
   cursor: pointer;
 }

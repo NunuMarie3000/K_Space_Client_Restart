@@ -1,5 +1,4 @@
 import React, { useState } from 'react'
-import { Button } from 'react-bootstrap'
 import NewBlogEntry from './NewBlogEntry'
 
 export default function AddBlogEntry( { author, getBlogs }) {
@@ -11,7 +10,7 @@ export default function AddBlogEntry( { author, getBlogs }) {
 
   return (
     <>
-      {isAddBtnClicked ? <NewBlogEntry getBlogs={getBlogs} handleClick={handleClick} isAddBtnClicked={isAddBtnClicked} author={author} /> : <Button onClick={handleClick}>New Post</Button>}
+      {isAddBtnClicked ? <NewBlogEntry getBlogs={getBlogs} handleClick={handleClick} isAddBtnClicked={isAddBtnClicked} author={author} /> : <button style={{margin: '5px 0'}} onClick={handleClick}>New Post</button>}
     </>
   )
 }

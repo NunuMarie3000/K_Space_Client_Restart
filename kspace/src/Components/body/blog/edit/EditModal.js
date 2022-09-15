@@ -68,7 +68,7 @@ export default function EditModal({ editMode, toggleEditMode, blogId, authorId, 
 
             <Form.Group className="mb-3" controlId="post_body">
               <Form.Label>Body</Form.Label>
-              <Form.Control type="text" defaultValue={body} onChange={(e)=>setBody(e.target.value)}  />
+              <Form.Control as="textarea" rows={3}  type="text" defaultValue={body} onChange={(e)=>setBody(e.target.value)}  />
             </Form.Group>
             
             <Button variant="primary" type="submit">

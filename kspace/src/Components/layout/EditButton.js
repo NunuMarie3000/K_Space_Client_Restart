@@ -21,7 +21,7 @@ export default class EditButton extends Component {
     const {
       isEditBtnClicked,
     } = this.state
-    const { userLayout, getLayout } = this.props
+    const { userLayout, getLayout, logout, userInfoAuth } = this.props
     return (
       <>
         <div className='edit-layout-container'>
@@ -29,7 +29,7 @@ export default class EditButton extends Component {
 
           <button style={{float:'right', marginLeft:'-1000px', marginBottom:'-80px'}} onClick={this.handleClick} className='Edit-button'>Edit <i className="fa-solid fa-pen-to-square"></i></button>
 
-          <Body userLayout={userLayout} />
+          <Body userInfoAuth={userInfoAuth} logout={logout} userLayout={userLayout} />
 
         </div>
         <EditLayoutModal userLayout={userLayout} isEditBtnClicked={isEditBtnClicked} handleClick={this.handleClick} getLayout={getLayout} />

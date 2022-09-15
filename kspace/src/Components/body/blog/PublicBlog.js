@@ -23,7 +23,7 @@ export default function PublicBlog() {
 
   return (
     <> 
-      <h1>'s Blog Posts</h1>
+      <h1>My Blog Posts</h1>
       {blogs !== '' && blogs.map(blog => <Card>
         <Card.Body>
           <Card.Title>{blog.title}</Card.Title>

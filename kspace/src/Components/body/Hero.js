@@ -9,8 +9,8 @@ export default function Hero({ userLayout }) {
     <>
       <div style={{border:'2px solid black', display:'flex', flexDirection:'column', height:'fit-content', justifyContent:'center'}} className='hero-container'>
       
-      <img style={{width:'300px', height:'200px'}} alt={heroImg1Alt} src={heroImg1} />
-      <img style={{width:'300px', height:'200px'}} alt={heroImg2Alt} src={heroImg2} />
+      <img style={{width:'auto', height:'200px'}} alt={heroImg1Alt} src={heroImg1} />
+      <img style={{width:'auto', height:'200px'}} alt={heroImg2Alt} src={heroImg2} />
       </div>
     </>
   )

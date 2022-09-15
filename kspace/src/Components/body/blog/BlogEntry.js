@@ -12,7 +12,7 @@ export default function BlogEntry({ title, date_of_entry, date_of_update, body, 
 
   return (
     <>
-      <Card>
+      <Card style={{marginBottom:'1rem', border: '1px solid black', borderRadius: '1%/5%'}}>
       <Card.Body>
         <Card.Title>{title}</Card.Title>
         <Card.Subtitle className="mb-2 text-muted">Posted: {date_of_entry}<br />
