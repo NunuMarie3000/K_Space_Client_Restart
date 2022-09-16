@@ -23,11 +23,11 @@ export default function EditAboutMe({ isEditBtnClicked, handleClick, aboutMe, id
     }
     if(updatedImage === ''){
       sendImg = aboutMe.image
-    }else{sendMe = updatedAboutMe}
+    }else{sendImg = updatedImage}
     if(updatedAlt === ''){
       sendAlt = aboutMe.alt
     }else{sendAlt = updatedAlt}
-
+    console.log(sendAlt)
     return {about_me:sendMe, interests:sendInt, image:sendImg, alt:sendAlt}
   }
 
@@ -35,7 +35,8 @@ export default function EditAboutMe({ isEditBtnClicked, handleClick, aboutMe, id
     const userId = id
     const url = `${process.env.REACT_APP_SERVER}aboutme/${userId}`
     const info = check(e)
-    const newBody = {...info, user:userId}
+    const newBody = { user:userId, ...info}
+    console.log(newBody)
     try {
       e.preventDefault()
       await axios.put(url, newBody)

@@ -41,7 +41,7 @@ export default function EditLayoutModal({ isEditBtnClicked, handleClick, userLay
     } else { sendAlt1 = hero1Alt }
     if (hero2Alt === '') {
       sendAlt2 = userLayout.heroImg2Alt
-    } else { send2 = hero2Alt }
+    } else { sendAlt2 = hero2Alt }
 
     return {
       backColor: sendBC, backImage: sendBI, fontBodyColor: sendBody,
@@ -57,6 +57,7 @@ export default function EditLayoutModal({ isEditBtnClicked, handleClick, userLay
       e.preventDefault()
       // this will return an object
       const toSend = checkValues(e)
+      console.log(toSend)
       await axios.put(url, toSend)
       getLayout()
       handleClick()
@@ -87,12 +88,6 @@ export default function EditLayoutModal({ isEditBtnClicked, handleClick, userLay
               <Form.Label>Text Color: Body</Form.Label>
               <Form.Control defaultValue={fontBodyColor} type="text" placeholder="Hex code: #fff" onChange={(e) => setBodyColor(e.target.value)} />
             </Form.Group>
-
-            {/*COME BACK TO THIS */}
-            {/* <Form.Group className="mb-3" controlId="song-src">
-              <Form.Label>Song Choice</Form.Label>
-              <Form.Control type="file" placeholder="Image url: http://www.asksfskd" onChange={(e) => setBackgroundImage(e.target.value)} />
-            </Form.Group> */}
 
             <Form.Group className="mb-3" controlId="hero1">
               <Form.Label>Hero image 1</Form.Label>
