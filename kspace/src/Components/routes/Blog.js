@@ -33,7 +33,7 @@ export default function Blog() {
             backgroundColor: layout ? layout.backColor : '#fff',
             backgroundImage: layout ? `url(${layout.backImage})` : 'none',
             color: layout ? layout.fontBodyColor : 'black',
-            height:'100%',
+            height:'100vh',
             padding: '10px 15px 0 15px'
           }}>
         <Navigation/>
