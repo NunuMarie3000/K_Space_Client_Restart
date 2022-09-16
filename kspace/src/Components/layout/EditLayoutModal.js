@@ -51,6 +51,7 @@ export default function EditLayoutModal({ isEditBtnClicked, handleClick, userLay
 
   // this needs to make put request to /layout/:user
   const handleSubmit = async (e) => {
+    console.log(userLayout.user)
     const userId = userLayout.user
     const url = `${process.env.REACT_APP_SERVER}layout/${userId}`
     try {
@@ -58,8 +59,9 @@ export default function EditLayoutModal({ isEditBtnClicked, handleClick, userLay
       // this will return an object
       const toSend = checkValues(e)
       await axios.put(url, toSend)
-      getLayout()
+      // getLayout()
       handleClick()
+      window.location.reload()
     } catch (error) {
       console.log(error.message)
     }
@@ -87,12 +89,6 @@ export default function EditLayoutModal({ isEditBtnClicked, handleClick, userLay
               <Form.Label>Text Color: Body</Form.Label>
               <Form.Control defaultValue={fontBodyColor} type="text" placeholder="Hex code: #fff" onChange={(e) => setBodyColor(e.target.value)} />
             </Form.Group>
-
-            {/*COME BACK TO THIS */}
-            {/* <Form.Group className="mb-3" controlId="song-src">
-              <Form.Label>Song Choice</Form.Label>
-              <Form.Control type="file" placeholder="Image url: http://www.asksfskd" onChange={(e) => setBackgroundImage(e.target.value)} />
-            </Form.Group> */}
 
             <Form.Group className="mb-3" controlId="hero1">
               <Form.Label>Hero image 1</Form.Label>
