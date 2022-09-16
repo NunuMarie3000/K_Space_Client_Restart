@@ -25,7 +25,7 @@ export default function Blog() {
   useEffect(()=>{
     getBlogs()
     //eslint-disable-next-line
-}, [])
+  }, [])
 
   return (
     <>

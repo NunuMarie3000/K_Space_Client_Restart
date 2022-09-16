@@ -51,6 +51,7 @@ export default function EditLayoutModal({ isEditBtnClicked, handleClick, userLay
 
   // this needs to make put request to /layout/:user
   const handleSubmit = async (e) => {
+    console.log(userLayout.user)
     const userId = userLayout.user
     const url = `${process.env.REACT_APP_SERVER}layout/${userId}`
     try {
@@ -59,8 +60,9 @@ export default function EditLayoutModal({ isEditBtnClicked, handleClick, userLay
       const toSend = checkValues(e)
       console.log(toSend)
       await axios.put(url, toSend)
-      getLayout()
+      // getLayout()
       handleClick()
+      window.location.reload()
     } catch (error) {
       console.log(error.message)
     }
