@@ -12,7 +12,7 @@ export default function Blog() {
   const layout = location.state
 
   const getBlogs = async () => {
-    const userId = process.env.REACT_APP_MY_ID
+    const userId = layout.user
     const url = `${process.env.REACT_APP_SERVER}${userId}/entries`
     try {
       await axios.get(url).then(res => setBlogs(res.data ))
@@ -24,7 +24,8 @@ export default function Blog() {
 
   useEffect(()=>{
     getBlogs()
-  }, [])
+    //eslint-disable-next-line
+}, [])
 
   return (
     <>

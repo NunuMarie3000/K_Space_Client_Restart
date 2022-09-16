@@ -11,7 +11,7 @@ export default function Top() {
   const { loginWithRedirect, logout, isLoading, user } = useAuth0()
   const [userLayout, setLayout] = useState('')
   const [isSiteLoading, setSiteLoading] = useState('')
-
+  
   const getLayout = async () => {
     setSiteLoading(true)
     // /layout/:user
@@ -26,22 +26,24 @@ export default function Top() {
     }
   }
 
+
   useEffect(() => {
     getLayout()
+    //eslint-disable-next-line
   }, [])
 
   if(isSiteLoading){
     return(
-      <><LoadingPage/></>
+      <>{console.log('loadingpage')} <LoadingPage user={user} /></>
     )
   }else{
     if(user && !isLoading){
       return(
-        <><App userInfoAuth={user} logout={logout} userLayout={userLayout} getLayout={getLayout} /></>
+        <>{console.log('app')} <App userInfoAuth={user} logout={logout} userLayout={userLayout} getLayout={getLayout} /></>
       )
     }else if(!user && !isLoading){
       return(
-        <><Login loginWithRedirect={loginWithRedirect} /></>
+        <>{console.log('login')}<Login loginWithRedirect={loginWithRedirect} /></>
       )
     }
   } 
