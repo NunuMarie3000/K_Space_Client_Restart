@@ -5,4 +5,4 @@
 ### This project was based on the nostalgia I feel for y2k culture, the early 2000s and simpler times of social media and blogging :) 
 ### This is a passion project that was also my solo project at Code School Memphis for my 301 Course!
 
-[View Deployed Application and make an account!](https://kspace.netlify.app)
+[View Deployed Application and Make an Account!](https://kspace.netlify.app)
