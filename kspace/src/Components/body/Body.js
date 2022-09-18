@@ -12,7 +12,7 @@
 import React, { Component } from 'react'
 import axios from 'axios'
 import Profile from './profile/Profile'
-import Navigation from './Navigation'
+// import Navigation from './Navigation'
 import Contact from './Contact'
 import InterestsC from './InterestsC'
 import Hero from './Hero'
@@ -95,7 +95,7 @@ export default class Body extends Component {
             backgroundImage: userLayout ? `url(${userLayout.backImage})` : 'none',
             color: userLayout ? userLayout.fontBodyColor : 'black',
           }}>
-          {userLayout && <Navigation userLayout={userLayout} logout={logout} username={username} />}
+          {/* {userLayout && <Navigation userLayout={userLayout} logout={logout} username={username} />} */}
           {profile !== '' && <Profile getProfile={this.getProfile} userInfoAuth={userInfoAuth} id={userLayout.user} profile={profile} />}
           <Contact />
           {userLayout && <InterestsC interests={aboutMe.interests} />}

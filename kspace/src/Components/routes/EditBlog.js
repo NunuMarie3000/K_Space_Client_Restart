@@ -4,7 +4,6 @@
 // delete posts
 // and edit posts
 import React, { useState, useEffect} from 'react'
-import Navigation from '../body/Navigation'
 import axios from 'axios'
 import BlogEntry from '../body/blog/BlogEntry'
 import AddBlogEntry from '../body/blog/edit/AddBlogEntry'
@@ -40,7 +39,6 @@ export default function EditBlog() {
             height:'100%',
             padding: '10px 15px 0 15px'
           }}>
-          <Navigation />
 
           {blogs !== '' && <AddBlogEntry getBlogs={getBlogs} author={blogs[0].author} />}
 
