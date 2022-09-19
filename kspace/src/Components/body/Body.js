@@ -84,8 +84,8 @@ export default class Body extends Component {
   }
 
   render() {
-    const { _id, username } = this.state.userData
-    const { userLayout, logout, userInfoAuth } = this.props
+    const { _id } = this.state.userData
+    const { userLayout, userInfoAuth } = this.props
     const { profile, aboutMe, blogs } = this.state
     return (
       <>
@@ -95,7 +95,6 @@ export default class Body extends Component {
             backgroundImage: userLayout ? `url(${userLayout.backImage})` : 'none',
             color: userLayout ? userLayout.fontBodyColor : 'black',
           }}>
-          {/* {userLayout && <Navigation userLayout={userLayout} logout={logout} username={username} />} */}
           {profile !== '' && <Profile getProfile={this.getProfile} userInfoAuth={userInfoAuth} id={userLayout.user} profile={profile} />}
           <Contact />
           {userLayout && <InterestsC interests={aboutMe.interests} />}

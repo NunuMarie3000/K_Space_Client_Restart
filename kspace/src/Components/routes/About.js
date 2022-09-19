@@ -1,6 +1,5 @@
 import React from 'react'
 import { useLocation } from 'react-router-dom'
-import Navigation from '../body/Navigation'
 import Footer from '../body/Footer'
 
 export default function About() {
@@ -12,7 +11,7 @@ export default function About() {
             backgroundColor: layout ? layout.backColor : '#fff',
             backgroundImage: layout ? `url(${layout.backImage})` : 'none',
             color: layout ? layout.fontBodyColor : 'black',
-            height:'100vh',
+            height:'100%',
             padding: '10px 15px 0 15px'
           }}>
       <div style={{ padding:'5vh 5vw 10vh 5vw', fontFamily:"'Michroma', sans-serif"}}>

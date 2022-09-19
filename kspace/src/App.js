@@ -1,8 +1,6 @@
 import React, { useEffect, useState } from 'react'
-// import EditButton from './Components/layout/EditButton'
 import axios from 'axios'
 import LoadingPage from './Components/LoadingPage'
-
 import Navigation from './Components/body/Navigation'
 import Welcome from './Components/routes/Welcome'
 
@@ -10,8 +8,6 @@ export default function App({ logout, user }) {
   const [userLayout, setLayout] = useState('')
   const [USERID, setUSERID] = useState('')
   const [weLoading, setWeLoading] = useState(false)
-
-  const [allData, setAllData] = useState('')
   // now that i have user on login, i can use it to get email and whatnot
 
   const getUserInfoFromDB = async () => {
@@ -27,7 +23,6 @@ export default function App({ logout, user }) {
         getLayout(res.data._id)
         setUSERID(res.data._id)
         console.log('we have an id ')
-        console.log(res)
         setWeLoading(false)
       }
     } catch (error) {
@@ -42,11 +37,6 @@ export default function App({ logout, user }) {
       const response = await axios.get(url)
       setLayout(response.data[0])
       // setSiteLoading(false)
-      setAllData({
-        userInfoAuth: user, 
-        logout: logout, 
-        userLayout: response.data[0]
-      })
     } catch (error) {
       console.log(error.message)
     }
@@ -104,11 +94,9 @@ export default function App({ logout, user }) {
     <>
       {weLoading && <LoadingPage />}
 
-      {userLayout !== '' && <Navigation allData={allData} USERID={USERID} userInfoAuth={user} logout={logout} userLayout={userLayout} getLayout={getLayout} /> }
+      {userLayout !== '' && <Navigation USERID={USERID} userInfoAuth={user} logout={logout} userLayout={userLayout} /> } 
 
       {userLayout !== '' && window.location.pathname === '/' ? <Welcome userLayout={userLayout} /> : null}
-
-      {/* {userLayout !== '' && <EditButton USERID={USERID} userInfoAuth={user} logout={logout} userLayout={userLayout} getLayout={getLayout} />} */}
     </>
   )
 }

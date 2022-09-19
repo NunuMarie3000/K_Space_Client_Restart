@@ -2,8 +2,11 @@ import React from 'react'
 import Header from '../header/Header'
 import { Outlet, Link } from 'react-router-dom'
 
-export default function Navigation({ userLayout, logout, allData }) {
-  const dataForHome = {...allData, logout}
+export default function Navigation({ userLayout, logout, userInfoAuth }) {
+  // home route can only be passed one object via state
+  // needs userLayout, getLayout, and userInfoAuth
+  // but i can also copy and paste getLayout function
+  const dataForHome = { ...userInfoAuth, ...userLayout}
   return (
     <>
       <div style={{
@@ -18,7 +21,7 @@ export default function Navigation({ userLayout, logout, allData }) {
 
         <div className='navigation-container'>
           <nav>
-            <Link state={dataForHome} to='/home'>Home</Link> | {' '}
+          <Link state={dataForHome} to='/home'>Home</Link> | {' '}
             <Link state={userLayout} to='/blog'>Blog</Link> | {' '}
             <Link state={userLayout} to='/editblog'>Edit Blog</Link> | {' '}
             <Link state={userLayout} to='/about'>About</Link>

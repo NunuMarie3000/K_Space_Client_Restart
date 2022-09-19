@@ -35,7 +35,6 @@ export default function Blog() {
             height:'100%',
             padding: '10px 15px 0 15px'
           }}>
-        {/* <Navigation/> */}
         <h1 style={{fontFamily:"'Michroma', sans-serif"}}>Blog Posts</h1>
         {blogs !== '' && blogs.map(blog => <Card style={{marginBottom:'1rem'}}>
           <Card.Body>
