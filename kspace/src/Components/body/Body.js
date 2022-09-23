@@ -12,7 +12,7 @@
 import React, { Component } from 'react'
 import axios from 'axios'
 import Profile from './profile/Profile'
-import Navigation from './Navigation'
+// import Navigation from './Navigation'
 import Contact from './Contact'
 import InterestsC from './InterestsC'
 import Hero from './Hero'
@@ -84,18 +84,17 @@ export default class Body extends Component {
   }
 
   render() {
-    const { _id, username } = this.state.userData
-    const { userLayout, logout, userInfoAuth } = this.props
+    const { _id } = this.state.userData
+    const { userLayout, userInfoAuth } = this.props
     const { profile, aboutMe, blogs } = this.state
     return (
       <>
         {this.state.isSiteLoading ? <LoadingPage /> : <div className='body-container'
           style={{
-            backgroundColor: userLayout ? userLayout.backColor : '#fff',
-            backgroundImage: userLayout ? `url(${userLayout.backImage})` : 'none',
-            color: userLayout ? userLayout.fontBodyColor : 'black',
+            // backgroundColor: userLayout ? userLayout.backColor : '#fff',
+            // backgroundImage: userLayout ? `url(${userLayout.backImage})` : 'none',
+            color: userLayout ? userLayout.fontBodyColor : 'black', 
           }}>
-          {userLayout && <Navigation userLayout={userLayout} logout={logout} username={username} />}
           {profile !== '' && <Profile getProfile={this.getProfile} userInfoAuth={userInfoAuth} id={userLayout.user} profile={profile} />}
           <Contact />
           {userLayout && <InterestsC interests={aboutMe.interests} />}

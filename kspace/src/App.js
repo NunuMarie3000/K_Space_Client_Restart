@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from 'react'
-import EditButton from './Components/layout/EditButton'
 import axios from 'axios'
 import LoadingPage from './Components/LoadingPage'
+import Navigation from './Components/body/Navigation'
+import Welcome from './Components/routes/Welcome'
 
-export default function App({ isSiteLoading, setSiteLoading, logout, user }) {
+export default function App({ logout, user }) {
   const [userLayout, setLayout] = useState('')
   const [USERID, setUSERID] = useState('')
   const [weLoading, setWeLoading] = useState(false)
@@ -22,7 +23,6 @@ export default function App({ isSiteLoading, setSiteLoading, logout, user }) {
         getLayout(res.data._id)
         setUSERID(res.data._id)
         console.log('we have an id ')
-        console.log(res)
         setWeLoading(false)
       }
     } catch (error) {
@@ -85,16 +85,6 @@ export default function App({ isSiteLoading, setSiteLoading, logout, user }) {
     }
   }
 
-  // const check = async () => {
-  //   // if we have an account, getUserInfoFromDB()
-  //   if(){
-  //     getUserInfoFromDB()
-  //   }else{
-  //     createUserId()
-  //   }
-  //   // else createUser()
-  // }
-
   useEffect(() => {
     getUserInfoFromDB()
     //eslint-disable-next-line
@@ -103,7 +93,10 @@ export default function App({ isSiteLoading, setSiteLoading, logout, user }) {
   return (
     <>
       {weLoading && <LoadingPage />}
-      {userLayout !== '' && <EditButton USERID={USERID} userInfoAuth={user} logout={logout} userLayout={userLayout} getLayout={getLayout} />}
+
+      {userLayout !== '' && <Navigation USERID={USERID} userInfoAuth={user} logout={logout} userLayout={userLayout} /> } 
+
+      {userLayout !== '' && window.location.pathname === '/' ? <Welcome userLayout={userLayout} /> : null}
     </>
   )
 }

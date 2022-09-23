@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react'
 import axios from 'axios'
 import { Card } from 'react-bootstrap'
 import { useLocation } from 'react-router-dom'
-import Navigation from '../body/Navigation'
 import Footer from '../body/Footer'
 // this is where i'll get all my blogs for this user, won't be editable here, this will be public facing
 
@@ -30,15 +29,14 @@ export default function Blog() {
   return (
     <>
       <div style={{
-            backgroundColor: layout ? layout.backColor : '#fff',
-            backgroundImage: layout ? `url(${layout.backImage})` : 'none',
+            // backgroundColor: layout ? layout.backColor : '#fff',
+            // backgroundImage: layout ? `url(${layout.backImage})` : 'none',
             color: layout ? layout.fontBodyColor : 'black',
-            height:'100vh',
+            height:'100%',
             padding: '10px 15px 0 15px'
           }}>
-        <Navigation/>
         <h1 style={{fontFamily:"'Michroma', sans-serif"}}>Blog Posts</h1>
-        {blogs !== '' && blogs.map(blog => <Card style={{marginBottom:'1rem'}}>
+        {blogs !== '' && blogs.map(blog => <Card key={blog._id} style={{marginBottom:'1rem'}}>
           <Card.Body>
             <Card.Title>{blog.title}</Card.Title>
             <Card.Subtitle className="mb-2 text-muted">Posted: {blog.date_of_entry}</Card.Subtitle>

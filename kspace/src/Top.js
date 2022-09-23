@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React from 'react'
 import App from './App'
 import Login from './Components/auth/Login'
 import { useAuth0 } from '@auth0/auth0-react'
@@ -7,12 +7,10 @@ import { useAuth0 } from '@auth0/auth0-react'
 
 export default function Top() {
   const { loginWithRedirect, logout, isLoading, user } = useAuth0()
-  const [isSiteLoading, setSiteLoading] = useState('')
   
 if (user && !isLoading) {
     return (
-      <><App user={user} logout={logout} isSiteLoading={isSiteLoading} setSiteLoading={setSiteLoading} /></>
-      /* <><App userInfoAuth={user} logout={logout} userLayout={userLayout} getLayout={getLayout} /></> */
+      <><App user={user} logout={logout} /></>
     )
   } else if (!user && !isLoading) {
     return (

@@ -2,7 +2,7 @@ import axios from 'axios'
 import React, { useState } from 'react'
 import { Modal, Button, Form } from 'react-bootstrap'
 
-export default function EditLayoutModal({ isEditBtnClicked, handleClick, userLayout, getLayout }) {
+export default function EditLayoutModal({ isEditBtnClicked, handleClick, userLayout }) {
   const [backgroundColor, setBackgroundColor] = useState('')
   const [backgroundImage, setBackgroundImage] = useState('')
   const [bodyColor, setBodyColor] = useState('')
@@ -60,7 +60,6 @@ export default function EditLayoutModal({ isEditBtnClicked, handleClick, userLay
       const toSend = checkValues(e)
       console.log(toSend)
       await axios.put(url, toSend)
-      // getLayout()
       handleClick()
       window.location.reload()
     } catch (error) {
