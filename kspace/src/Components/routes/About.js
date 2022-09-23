@@ -9,7 +9,7 @@ export default function About() {
     <>
       <div style={{
             color: layout ? layout.fontBodyColor : 'black',
-            height:'100%',
+            height:'100vh',
             padding: '10px 15px 0 15px'
           }}>
       <div style={{ padding:'5vh 5vw 10vh 5vw', fontFamily:"'Michroma', sans-serif"}}>
