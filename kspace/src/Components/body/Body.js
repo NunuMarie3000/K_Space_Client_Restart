@@ -91,9 +91,9 @@ export default class Body extends Component {
       <>
         {this.state.isSiteLoading ? <LoadingPage /> : <div className='body-container'
           style={{
-            backgroundColor: userLayout ? userLayout.backColor : '#fff',
-            backgroundImage: userLayout ? `url(${userLayout.backImage})` : 'none',
-            color: userLayout ? userLayout.fontBodyColor : 'black',
+            // backgroundColor: userLayout ? userLayout.backColor : '#fff',
+            // backgroundImage: userLayout ? `url(${userLayout.backImage})` : 'none',
+            color: userLayout ? userLayout.fontBodyColor : 'black', 
           }}>
           {profile !== '' && <Profile getProfile={this.getProfile} userInfoAuth={userInfoAuth} id={userLayout.user} profile={profile} />}
           <Contact />

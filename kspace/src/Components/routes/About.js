@@ -8,8 +8,6 @@ export default function About() {
   return (
     <>
       <div style={{
-            backgroundColor: layout ? layout.backColor : '#fff',
-            backgroundImage: layout ? `url(${layout.backImage})` : 'none',
             color: layout ? layout.fontBodyColor : 'black',
             height:'100%',
             padding: '10px 15px 0 15px'

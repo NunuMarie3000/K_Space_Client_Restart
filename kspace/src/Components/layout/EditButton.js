@@ -21,7 +21,7 @@ export default class EditButton extends Component {
     const {
       isEditBtnClicked,
     } = this.state
-    const { userLayout, getLayout, userInfoAuth } = this.props
+    const { userLayout, userInfoAuth } = this.props
     return (
       <>
         <div className='edit-layout-container'>
@@ -31,7 +31,7 @@ export default class EditButton extends Component {
           {userLayout && <Body userInfoAuth={userInfoAuth} userLayout={userLayout} />}
 
         </div>
-        <EditLayoutModal userLayout={userLayout} isEditBtnClicked={isEditBtnClicked} handleClick={this.handleClick} getLayout={getLayout} />
+        <EditLayoutModal userLayout={userLayout} isEditBtnClicked={isEditBtnClicked} handleClick={this.handleClick} />
       </>
     )
   }

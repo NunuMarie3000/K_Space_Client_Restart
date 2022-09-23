@@ -33,18 +33,16 @@ export default function EditBlog() {
   return (
     <>
       <div style={{
-            backgroundColor: layout ? layout.backColor : '#fff',
-            backgroundImage: layout ? `url(${layout.backImage})` : 'none',
             color: layout ? layout.fontBodyColor : 'black',
             height:'100%',
-            padding: '10px 15px 0 15px'
+            padding: '0px 15px 0 15px'
           }}>
 
           {blogs !== '' && <AddBlogEntry getBlogs={getBlogs} author={blogs[0].author} />}
 
           <div>
             {blogs !== '' && blogs.map(blog =>
-              <BlogEntry getBlogs={getBlogs} blogId={blog._id} authorId={blog.author} title={blog.title} date_of_entry={blog.date_of_entry} date_of_update={blog.date_of_update} body={blog.body} />)}
+              <BlogEntry key={blog._id} getBlogs={getBlogs} blogId={blog._id} authorId={blog.author} title={blog.title} date_of_entry={blog.date_of_entry} date_of_update={blog.date_of_update} body={blog.body} />)}
           </div>
           <Footer/>
         </div>
