@@ -55,7 +55,7 @@ export default function EditAboutMe({ isEditBtnClicked, handleClick, aboutMe, id
         </Modal.Header>
         <Modal.Body>
 
-          <Form onSubmit={handleSubmit}>
+          <Form onSubmit={handleSubmit} netlify>
 
             <Form.Group className="mb-3" controlId="about-me">
               <Form.Label>About Me</Form.Label>
