@@ -28,7 +28,7 @@ export default class EditButton extends Component {
 
           <button style={{float:'right', marginLeft:'-1000px', marginBottom:'-80px'}} onClick={this.handleClick} className='Edit-button'>Edit <i className="fa-solid fa-pen-to-square"></i></button>
 
-          {userLayout && <Body userInfoAuth={userInfoAuth} userLayout={userLayout} />}
+          {userLayout !== undefined && userLayout !== null && userLayout !== '' && <Body userInfoAuth={userInfoAuth} userLayout={userLayout} />}
 
         </div>
         <EditLayoutModal userLayout={userLayout} isEditBtnClicked={isEditBtnClicked} handleClick={this.handleClick} />

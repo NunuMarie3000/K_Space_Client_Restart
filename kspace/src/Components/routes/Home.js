@@ -1,22 +1,12 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import EditButton from '../layout/EditButton'
 import { useLocation } from 'react-router-dom'
+import axios from 'axios'
 
 export default function Home() {
   const location = useLocation()
   const data = location.state
-
-  const layout = {
-    backColor: data.backColor,
-    backImage: data.backImage,
-    fontBodyColor: data.fontBodyColor,
-    heroImg1: data.heroImg1,
-    heroImg1Alt: data.heroImg1Alt,
-    heroImg2: data.heroImg2,
-    heroImg2Alt: data.heroImg2Alt,
-    user: data.user,
-    _id: data._id
-  }
+  const [ layout, setLayout ] = useState(null);
 
   const userFromAuth = {
     email: data.email, 
@@ -28,9 +18,27 @@ export default function Home() {
     updated_at: data.updated_at
   }
 
+  const getLayout = async (layoutid) => {
+    // setSiteLoading(true)
+    // /layout/:user
+    const url = `${process.env.REACT_APP_SERVER}layout/${layoutid}`
+    try {
+      const response = await axios.get(url)
+      setLayout(response.data[0])
+      // setSiteLoading(false)
+    } catch (error) {
+      console.log(error.message)
+    }
+  }
+
+  useEffect(()=>{
+    getLayout(data.userLayoutId)
+  })
+  // console.log(layout.fontBodyColor);
+
   return (
     <>
-      {layout !== '' && <EditButton USERID={layout.user} userInfoAuth={userFromAuth} userLayout={layout} />}
+      {layout !== null && layout !== undefined && <EditButton USERID={layout.user} userInfoAuth={userFromAuth} userLayout={layout} />}
     </>
   )
 }

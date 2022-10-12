@@ -6,7 +6,10 @@ export default function Navigation({ userLayout, logout, userInfoAuth }) {
   // home route can only be passed one object via state
   // needs userLayout, getLayout, and userInfoAuth
   // but i can also copy and paste getLayout function
-  const dataForHome = { ...userInfoAuth, ...userLayout }
+  console.log(userLayout)
+  const dataForHome = { ...userInfoAuth, userLayoutId:userLayout.user }
+  console.log(userLayout); // getting correct data here
+  console.log(dataForHome);// im getting the correct data here
   return (
     <>
       <div style={{
