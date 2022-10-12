@@ -74,7 +74,7 @@ export default function EditLayoutModal({ isEditBtnClicked, handleClick, userLay
           <Modal.Title>Edit Layout</Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          <Form onSubmit={handleSubmit} netlify>
+          <Form onSubmit={handleSubmit} >
             <Form.Group className="mb-3" controlId="backgroundcolor">
               <Form.Label>Background Color</Form.Label>
               <Form.Control defaultValue={backColor} type="text" placeholder="Hex code: #fff" onChange={(e) => setBackgroundColor(e.target.value)} />

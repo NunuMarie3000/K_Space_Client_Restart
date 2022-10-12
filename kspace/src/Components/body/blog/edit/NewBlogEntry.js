@@ -39,7 +39,7 @@ export default function NewBlogEntry({ isAddBtnClicked, handleClick, author, get
         </Modal.Header>
         <Modal.Body>
 
-          <Form onSubmit={handleSubmit} netlify>
+          <Form onSubmit={handleSubmit} >
 
             <Form.Group className="mb-3" controlId="post_title">
               <Form.Label>Title</Form.Label>

@@ -59,7 +59,7 @@ export default function EditModal({ editMode, toggleEditMode, blogId, authorId, 
         </Modal.Header>
         <Modal.Body>
 
-          <Form onSubmit={handleSubmit} netlify>
+          <Form onSubmit={handleSubmit} >
 
             <Form.Group className="mb-3" controlId="post_title">
               <Form.Label>Title</Form.Label>

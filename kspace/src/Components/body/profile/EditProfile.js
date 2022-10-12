@@ -46,7 +46,7 @@ export default function EditProfile({ isEditBtnClicked, handleClick, profile, mo
         </Modal.Header>
         <Modal.Body>
 
-          <Form onSubmit={handleSubmit} netlify>
+          <Form onSubmit={handleSubmit} >
 
             <Form.Group className="mb-3" controlId="profile">
               <Form.Label>Profile</Form.Label>
