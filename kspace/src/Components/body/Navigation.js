@@ -8,8 +8,7 @@ export default function Navigation({ userLayout, logout, userInfoAuth }) {
   // but i can also copy and paste getLayout function
   console.log(userLayout)
   const dataForHome = { ...userInfoAuth, userLayoutId:userLayout.user }
-  console.log(userLayout); // getting correct data here
-  console.log(dataForHome);// im getting the correct data here
+
   return (
     <>
       <div style={{
@@ -23,11 +22,11 @@ export default function Navigation({ userLayout, logout, userInfoAuth }) {
         <Header userLayout={userLayout} logout={logout} />
 
         <div className='navigation-container'>
-          <nav>
-            <Link state={dataForHome} to='/home'>Home</Link> | {' '}
-            <Link state={userLayout} to='/blog'>Blog</Link> | {' '}
-            <Link state={userLayout} to='/editblog'>Edit Blog</Link> | {' '}
-            <Link state={userLayout} to='/about'>About</Link>
+          <nav >
+            <Link style={{color: userLayout ? userLayout.fontBodyColor : 'black'}} state={dataForHome} to='/home'>Home</Link> | {' '}
+            <Link style={{color: userLayout ? userLayout.fontBodyColor : 'black'}} state={userLayout} to='/blog'>Blog</Link> | {' '}
+            <Link style={{color: userLayout ? userLayout.fontBodyColor : 'black'}} state={userLayout} to='/editblog'>Edit Blog</Link> | {' '}
+            <Link style={{color: userLayout ? userLayout.fontBodyColor : 'black'}} state={userLayout} to='/about'>About</Link>
           </nav>
           <Outlet />
         </div>
