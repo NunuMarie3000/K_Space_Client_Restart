@@ -26,7 +26,7 @@ export default function Navigation({ userLayout, logout, userInfoAuth }) {
             <Link style={{color: userLayout ? userLayout.fontBodyColor : 'black'}} state={dataForHome} to='/home'>Home</Link> | {' '}
             <Link style={{color: userLayout ? userLayout.fontBodyColor : 'black'}} state={userLayout} to='/blog'>Blog</Link> | {' '}
             <Link style={{color: userLayout ? userLayout.fontBodyColor : 'black'}} state={userLayout} to='/editblog'>Edit Blog</Link> | {' '}
-            <Link style={{color: userLayout ? userLayout.fontBodyColor : 'black'}} state={userLayout} to='/about'>About</Link>
+            <Link style={{color: userLayout ? userLayout.fontBodyColor : 'black'}} to='/about'>About</Link>
           </nav>
           <Outlet />
         </div>
