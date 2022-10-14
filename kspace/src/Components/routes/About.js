@@ -7,6 +7,7 @@ export default function About() {
       <div style={{
         height: '100vh',
         padding: '10px 15px 0 15px',
+        marginTop:'5vh'
       }}>
         <div style={{
           padding: '5vh 5vw 10vh 5vw', fontFamily: "'Michroma', sans-serif", backgroundColor: 'white',
