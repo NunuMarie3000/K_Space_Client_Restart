@@ -22,7 +22,7 @@ export default function App({ logout, user }) {
       } else {
         getLayout(res.data._id)
         setUSERID(res.data._id)
-        console.log('we have an id ')
+        // console.log('we have an id ')
         setWeLoading(false)
       }
     } catch (error) {

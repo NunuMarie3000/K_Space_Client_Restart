@@ -13,8 +13,9 @@ export default function Contact() {
           <i className="fa-solid fa-message"></i>Send Message
         </div>
         {/*eslint-disable-next-line */}
-        <Link to='/'>Page Url</Link>
-        <Link to='/blog'>[View Blog]</Link>
+        {/* <Link to='/'>Page Url</Link> */}
+        [Page Url Coming Soon]
+        {/* <Link to='/blog'>[View Blog]</Link> */}
       </div>
     </>
   )

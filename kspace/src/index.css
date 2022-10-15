@@ -103,7 +103,15 @@ a:hover{
   cursor: pointer;
 }
 
+.profileUsername{
+  font-family: "Michroma", sans-serif;
+  font-size: 2rem;
+}
+
 @media screen and (max-width:767px){
+  .profileUsername{
+    font-size: 1.5rem;
+  }
   .body-container{
     grid-template-columns: .5fr 1fr;
     row-gap: 5px;
@@ -130,6 +138,10 @@ a:hover{
   }
 }
 @media screen and (max-width:490px){
+  .filterForm{
+    display: none;
+  }
+
   .body-container{
     grid-template-rows: 2rem 1fr .5fr 1fr;
   }

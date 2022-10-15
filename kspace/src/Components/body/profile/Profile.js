@@ -15,7 +15,7 @@ export default function Profile({ id, profile, userInfoAuth, getProfile }) {
   return (
     <>
       <div className='profile-container' style={{ border: '2px solid black', borderRadius: '4%/5%' }}>
-        <h1 style={{fontFamily:"'Michroma', sans-serif", fontSize:'30px'}}>{profile.username && profile.username !== ' ' ? profile.username : userInfoAuth.name}</h1>
+        <h1 className='profileUsername'>{profile.username && profile.username !== ' ' ? profile.username : userInfoAuth.name}</h1>
         {/*profile pic */}
         <div style={{ display: 'flex', gap:'10px' }}>
           <img style={{ width: '250px', height: '150px', borderRadius: '2%' }} className='profile-pic'

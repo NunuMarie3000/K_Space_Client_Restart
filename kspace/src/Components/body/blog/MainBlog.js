@@ -9,7 +9,7 @@ export default function MainBlog({ blogs }) {
       <div className='main-latest-blog' style={{border:'2px solid black', borderRadius:'2%/5%'}}>
         <h4 style={{textAlign:'center', fontFamily:"'Michroma', sans-serif"}}>My Latest blog entry</h4>
         <Latest blogs={blogs}/>
-        <Link to='/blog'>[View Blog]</Link>
+        {/* <Link to='/blog'>[View Blog]</Link> */}
       </div>
     </>
   )
