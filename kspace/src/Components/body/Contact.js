@@ -2,7 +2,7 @@
 // page url, so others can view this page
 // view blog = clicable to the user's blog, public facing, so...user/blog? or/blog?
 import React from 'react'
-import { Link } from 'react-router-dom'
+// import { Link } from 'react-router-dom'
 
 export default function Contact() {
   return (
