@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import axios from 'axios'
 
-export default function Login({ onLogin, switchToRegister }) {
+export default function Login({ onLogin, switchToRegister, switchToForgotPassword }) {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [error, setError] = useState('')
@@ -10,10 +10,6 @@ export default function Login({ onLogin, switchToRegister }) {
     e.preventDefault()
     try {
       const userData = { email, password };
-      // const response = await axios.post(`${process.env.REACT_APP_SERVER}auth/login`, {
-      //   email,
-      //   password
-      // })
       const response = await axios({
         method: 'post',
         url: 'http://localhost:3002/auth/login',
@@ -60,12 +56,20 @@ export default function Login({ onLogin, switchToRegister }) {
         <button type="submit">Login</button>
       </form>
       
-      <p>
-        Don't have an account?{' '}
-        <button className="link-button" onClick={switchToRegister}>
-          Register here
-        </button>
-      </p>
+      <div className="auth-links">
+          <p>
+            Don't have an account?{' '}
+            <button className="link-button" onClick={switchToRegister}>
+              Register here
+            </button>
+          </p>
+          <p>
+            Forgot password?{' '}
+            <button className="link-button" onClick={switchToForgotPassword}>
+              Reset it here
+            </button>
+          </p>
+        </div>
     </div>
   )
 }

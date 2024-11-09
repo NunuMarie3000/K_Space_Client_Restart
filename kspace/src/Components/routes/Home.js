@@ -33,7 +33,7 @@ export default function Home() {
 
   useEffect(()=>{
     getLayout(data.userLayoutId)
-  })
+  }, [data.userLayoutId])
   // console.log(layout.fontBodyColor);
 
   return (

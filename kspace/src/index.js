@@ -2,7 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom/client';
 import './index.css';
 import Top from './Top';
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import { BrowserRouter } from 'react-router-dom';
 import axios from 'axios';  // Add this import
 
 // Add the axios interceptor before the app renders
@@ -18,9 +18,7 @@ const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
     <BrowserRouter>
-      <Routes>
-        <Route path="/*" element={<Top />} />
-      </Routes>
+      <Top />
     </BrowserRouter>
   </React.StrictMode>
 );

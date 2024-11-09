@@ -3,85 +3,87 @@ import axios from 'axios'
 import LoadingPage from './Components/LoadingPage'
 import Navigation from './Components/body/Navigation'
 import Welcome from './Components/routes/Welcome'
+import Home from './Components/routes/Home'
+import Blog from './Components/routes/Blog'
+import EditBlog from './Components/routes/EditBlog'
+import About from './Components/routes/About'
+import { Routes, Route } from 'react-router-dom'
 
 export default function App({ logout, user }) {
-  const [userLayout, setLayout] = useState('')
-  const [USERID, setUSERID] = useState('')
+  const [userLayout, setLayout] = useState(null)
+  const [userId, setUserId] = useState(null)
   const [weLoading, setWeLoading] = useState(false)
   // now that i have user on login, i can use it to get email and whatnot
 
   const getUserInfoFromDB = async () => {
+    console.log('getUserInfoFromDB - user:', user);
     setWeLoading(true)
     const email = user.email
-    const url = `${process.env.REACT_APP_SERVER}${email}`
     try {
-      const res = await axios.get(url)
-      if (res.data == null || res.data === undefined || res.data === '') {
-        createUserId()
-        console.log('create user id')
+      const url = `${process.env.REACT_APP_SERVER}${email}`
+      const res = await axios.get(url);
+      console.log('getUserInfoFromDB response:', res.data);
+      
+      if (!res.data) {
+        // New user flow - just create defaults since user already exists
+        await createDefaults(user.sub) // user.sub contains the user._id from registration
+        await getLayout(user.sub)
+        setUserId(user.sub)
       } else {
-        getLayout(res.data._id)
-        setUSERID(res.data._id)
-        // console.log('we have an id ')
-        setWeLoading(false)
+        // Existing user flow
+        setUserId(res.data._id)
+        await getLayout(res.data._id)
       }
     } catch (error) {
-      console.log(error)
+      console.log('Error in getUserInfoFromDB:', error)
+    } finally {
+      setWeLoading(false)
     }
   }
   const getLayout = async (id) => {
-    // setSiteLoading(true)
-    // /layout/:user
     const url = `${process.env.REACT_APP_SERVER}layout/${id}`
     try {
       const response = await axios.get(url)
-      setLayout(response.data[0])
-      // setSiteLoading(false)
+      console.log('getLayout response:', response.data)
+      
+      if (!response.data || response.data.length === 0) {
+        // No layout found, create defaults
+        console.log('No layout found, creating defaults...')
+        await createDefaults(id)
+        // Try getting layout again after creating defaults
+        const newResponse = await axios.get(url)
+        setLayout(newResponse.data[0])
+      } else {
+        setLayout(response.data[0])
+      }
     } catch (error) {
-      console.log(error.message)
+      console.error('Error in getLayout:', error.message)
+      // Optionally create defaults here if the error is a 404
+      if (error.response?.status === 404) {
+        console.log('Layout not found, creating defaults...')
+        await createDefaults(id)
+        const newResponse = await axios.get(url)
+        setLayout(newResponse.data[0])
+      }
     }
   }
 
-  const createUserId = async () => {
-    // we gonna have their email
-    // server/new creates new user, need newUser = {username: user.name, email: user.email} post request
-    const url = `${process.env.REACT_APP_SERVER}new`
-    const body = {
-      username: user.name,
-      email: user.email
-    }
-    try {
-      console.log('we creating a userID')
-      const response = await axios.post(url, body)
-      createDefaults(response.data._id)
-    } catch (error) {
-      console.log(error)
-    }
-  }
   const createDefaults = async (id) => {
-    let urlArr = []
-    //new profile-
-    // /profile/:user
-    const profileUrl = `${process.env.REACT_APP_SERVER}profile/${id}`
-    // new layout-
-    // /layout/:user
-    const layoutUrl = `${process.env.REACT_APP_SERVER}layout/${id}`
-    // new aboutme
-    // /aboutme/:user
-    const aboutmeUrl = `${process.env.REACT_APP_SERVER}aboutme/${id}`
-    // new blog post
-    // /newentry/:user
-    const newblogUrl = `${process.env.REACT_APP_SERVER}newentry/${id}`
-    // i can iterate through the array, and make post requests for all at once 
-    urlArr.push(profileUrl, layoutUrl, aboutmeUrl, newblogUrl)
+    console.log('Creating defaults for user:', id);
+    const urlArr = [
+      `${process.env.REACT_APP_SERVER}profile/${id}`,
+      `${process.env.REACT_APP_SERVER}layout/${id}`,
+      `${process.env.REACT_APP_SERVER}aboutme/${id}`,
+      `${process.env.REACT_APP_SERVER}newentry/${id}`
+    ]
+    
     try {
-      console.log('we creating defaults')
-      await axios.all(urlArr.map(url => axios.post(url)))
-      console.log('user defaults created successfully!')
-      getLayout(id)
-      window.location.reload()
+      await Promise.all(urlArr.map(url => axios.post(url)))
+      console.log('Default user data created successfully!')
+      return true
     } catch (error) {
-      console.log(error.message)
+      console.error('Error creating defaults:', error.message)
+      return false
     }
   }
 
@@ -94,9 +96,18 @@ export default function App({ logout, user }) {
     <>
       {weLoading && <LoadingPage />}
 
-      {userLayout !== '' && <Navigation USERID={USERID} userInfoAuth={user} logout={logout} userLayout={userLayout} /> } 
-
-      {userLayout !== '' && window.location.pathname === '/' ? <Welcome userLayout={userLayout} /> : null}
+      {userLayout && (
+        <>
+          <Navigation userID={userId} userInfoAuth={user} logout={logout} userLayout={userLayout} />
+          <Routes>
+            <Route path="/" element={<Welcome userLayout={userLayout} />} />
+            <Route path="/home" element={<Home />} />
+            <Route path="/blog" element={<Blog />} />
+            <Route path="/editblog" element={<EditBlog />} />
+            <Route path="/about" element={<About />} />
+          </Routes>
+        </>
+      )}
     </>
   )
 }

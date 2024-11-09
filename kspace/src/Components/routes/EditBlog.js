@@ -3,7 +3,7 @@
 // get all existing posts
 // delete posts
 // and edit posts
-import React, { useState, useEffect} from 'react'
+import React, { useState, useEffect } from 'react'
 import axios from 'axios'
 import BlogEntry from '../body/blog/BlogEntry'
 import AddBlogEntry from '../body/blog/edit/AddBlogEntry'
@@ -25,7 +25,7 @@ export default function EditBlog() {
     }
   }
 
-  useEffect(()=>{
+  useEffect(() => {
     getBlogs()
     //eslint-disable-next-line
   }, [])
@@ -33,19 +33,19 @@ export default function EditBlog() {
   return (
     <>
       <div style={{
-            color: layout ? layout.fontBodyColor : 'black',
-            height:'100%',
-            padding: '0px 15px 0 15px'
-          }}>
+        color: layout ? layout.fontBodyColor : 'black',
+        height: '100%',
+        padding: '0px 15px 0 15px'
+      }}>
 
-          {blogs !== '' && <AddBlogEntry getBlogs={getBlogs} author={blogs[0].author} />}
+        {blogs !== '' && <AddBlogEntry getBlogs={getBlogs} author={blogs[0].author} />}
 
-          <div>
-            {blogs !== '' && blogs.map(blog =>
-              <BlogEntry key={blog._id} getBlogs={getBlogs} blogId={blog._id} authorId={blog.author} title={blog.title} date_of_entry={blog.date_of_entry} date_of_update={blog.date_of_update} body={blog.body} />)}
-          </div>
-          <Footer/>
+        <div>
+          {blogs !== '' && blogs.map(blog =>
+            <BlogEntry key={blog._id} getBlogs={getBlogs} blogId={blog._id} authorId={blog.author} title={blog.title} date_of_entry={blog.date_of_entry} date_of_update={blog.date_of_update} body={blog.body} />)}
         </div>
+        <Footer />
+      </div>
     </>
   )
 }

@@ -10,31 +10,29 @@ export default function Register({ onRegister, switchToLogin }) {
   const handleSubmit = async (e) => {
     e.preventDefault()
     try {
-      console.log('Attempting registration with:', { username, email, password })
-      const userData = { username, email, password };
-
-      // const response = await axios.post(`${process.env.REACT_APP_SERVER}/register`, {
-      //   username,
-      //   email,
-      //   password
-      // })
       const response = await axios({
         method: 'post',
-        url: 'http://localhost:3002/auth/register',  // note the /auth prefix
+        url: 'http://localhost:3002/auth/register',
         data: {
-          username: userData.username,
-          email: userData.email,
-          password: userData.password
+          username,
+          email,
+          password
         },
         headers: {
           'Content-Type': 'application/json'
         }
       });
 
-      console.log('Registration response:', response.data)
+      // Format user data to match expected structure
+      const formattedUser = {
+        name: response.data.user.username,
+        email: response.data.user.email,
+        email_verified: true,
+        sub: response.data.user._id
+      };
 
       localStorage.setItem('token', response.data.token)
-      onRegister(response.data.user)
+      onRegister(formattedUser)
     } catch (err) {
       console.error('Registration error:', err)
 
