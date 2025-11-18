@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { Card, CardContent, CardActions, Typography, Box } from '@mui/material'
+import { Card, CardContent, CardActions, Typography } from '@mui/material'
 import EditModal from './edit/EditModal'
 import DeleteBlog from './edit/DeleteBlog'
 

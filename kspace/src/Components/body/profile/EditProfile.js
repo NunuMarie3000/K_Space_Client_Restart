@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { Dialog, DialogTitle, DialogContent, DialogActions, TextField, Button, Typography } from '@mui/material'
+import { Dialog, DialogTitle, DialogContent, DialogActions, TextField, Button } from '@mui/material'
 import axios from 'axios'
 
 export default function EditProfile({ isEditBtnClicked, handleClick, profile, mood, id, getProfile, profilePic, username, authProfilePic, authUsername }) {
