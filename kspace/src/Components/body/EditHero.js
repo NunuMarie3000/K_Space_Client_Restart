@@ -1,46 +1,52 @@
 import React, { useState } from 'react'
-import { Dialog, DialogTitle, DialogContent, DialogActions, TextField, Button, Typography } from '@mui/material'
+import { Dialog, DialogTitle, DialogContent, DialogActions, TextField, Button } from '@mui/material'
+import { useDispatch, useSelector } from 'react-redux'
+import { updateUserLayout } from '../../store/userDataSlice'
 import axios from 'axios'
 
-export default function EditAboutMe({ isEditBtnClicked, handleClick, aboutMe, id, getAboutMe }) {
-  const [updatedAboutMe, setUpdate] = useState('')
-  const [updatedImage, setImage] = useState('')
-  const [updatedAlt, setAlt] = useState('')
+export default function EditHero({ isEditBtnClicked, handleClick }) {
+  const dispatch = useDispatch()
+  const userLayout = useSelector((state) => state.userData.userLayout)
+  const [hero1, setHeroImg1] = useState('')
+  const [hero2, setHeroImg2] = useState('')
+  const [hero1Alt, setAlt1] = useState('')
+  const [hero2Alt, setAlt2] = useState('')
 
   const handleSubmit = async (e) => {
     e.preventDefault()
-    const userId = id
-    const url = `${process.env.REACT_APP_SERVER}aboutme/${userId}`
+    if (!userLayout) return
     
-    let sendMe
-    let sendImg
-    let sendAlt
-    if(updatedAboutMe === ''){
-      sendMe = aboutMe.about_me
-    }else{sendMe = updatedAboutMe}
-    if(updatedImage === ''){
-      sendImg = aboutMe.image
-    }else{sendImg = updatedImage}
-    if(updatedAlt === ''){
-      sendAlt = aboutMe.alt
-    }else{sendAlt = updatedAlt}
+    const userId = userLayout.user
+    const url = `${process.env.REACT_APP_SERVER}layout/${userId}`
 
-    const newBody = { 
-      user: userId, 
-      about_me: sendMe, 
-      image: sendImg, 
-      alt: sendAlt,
-      interests: aboutMe.interests // Preserve interests
+    // Only update hero image fields, keep other layout fields unchanged
+    const updatedLayout = {
+      heroImg1: hero1 === '' ? userLayout.heroImg1 : hero1,
+      heroImg2: hero2 === '' ? userLayout.heroImg2 : hero2,
+      heroImg1Alt: hero1Alt === '' ? userLayout.heroImg1Alt : hero1Alt,
+      heroImg2Alt: hero2Alt === '' ? userLayout.heroImg2Alt : hero2Alt
     }
-    
+
+    const toSend = {
+      backColor: userLayout.backColor,
+      backImage: userLayout.backImage,
+      fontBodyColor: userLayout.fontBodyColor,
+      ...updatedLayout
+    }
+
     try {
-      await axios.put(url, newBody)
-      getAboutMe()
+      await axios.put(url, toSend)
+      // Update Redux state instead of reloading
+      dispatch(updateUserLayout(updatedLayout))
       handleClick()
     } catch (error) {
       console.log(error.message)
     }
   }
+
+  if (!userLayout) return null
+
+  const { heroImg1, heroImg1Alt, heroImg2, heroImg2Alt } = userLayout
 
   return (
     <Dialog 
@@ -60,37 +66,15 @@ export default function EditAboutMe({ isEditBtnClicked, handleClick, aboutMe, id
       }}
     >
       <DialogTitle sx={{ fontFamily: "'Michroma', sans-serif", fontWeight: 'bold' }}>
-        Edit About Me
+        Edit Hero Images
       </DialogTitle>
       <DialogContent>
         <form onSubmit={handleSubmit}>
           <TextField
             fullWidth
-            label="About Me"
-            defaultValue={aboutMe.about_me}
-            onChange={(e) => setUpdate(e.target.value)}
-            multiline
-            rows={4}
-            margin="normal"
-            sx={{
-              '& .MuiOutlinedInput-root': {
-                fontFamily: "'Michroma', sans-serif",
-                background: 'rgba(255, 255, 255, 0.3)',
-                backdropFilter: 'blur(5px)',
-                '& fieldset': {
-                  border: '1px solid rgba(255, 255, 255, 0.4)',
-                },
-                '&:hover fieldset': {
-                  border: '1px solid rgba(255, 255, 255, 0.5)',
-                },
-              },
-            }}
-          />
-          <TextField
-            fullWidth
-            label="About Me Image URL"
-            defaultValue={aboutMe.image}
-            onChange={(e) => setImage(e.target.value)}
+            label="Hero Image 1 URL"
+            defaultValue={heroImg1}
+            onChange={(e) => setHeroImg1(e.target.value)}
             placeholder="Image url: http://www.example.com/image.jpg"
             margin="normal"
             sx={{
@@ -109,10 +93,10 @@ export default function EditAboutMe({ isEditBtnClicked, handleClick, aboutMe, id
           />
           <TextField
             fullWidth
-            label="Image Alt Text"
-            defaultValue={aboutMe.alt}
-            onChange={(e) => setAlt(e.target.value)}
-            placeholder="What is this an image of?"
+            label="Hero Image 1 Alt Text"
+            defaultValue={heroImg1Alt}
+            onChange={(e) => setAlt1(e.target.value)}
+            placeholder="This is a picture of..."
             margin="normal"
             sx={{
               '& .MuiOutlinedInput-root': {
@@ -128,9 +112,48 @@ export default function EditAboutMe({ isEditBtnClicked, handleClick, aboutMe, id
               },
             }}
           />
-          <Typography variant="caption" sx={{ mt: 1, display: 'block', fontStyle: 'italic', color: 'text.secondary' }}>
-            What is this an image of?
-          </Typography>
+          <TextField
+            fullWidth
+            label="Hero Image 2 URL"
+            defaultValue={heroImg2}
+            onChange={(e) => setHeroImg2(e.target.value)}
+            placeholder="Image url: http://www.example.com/image.jpg"
+            margin="normal"
+            sx={{
+              '& .MuiOutlinedInput-root': {
+                fontFamily: "'Michroma', sans-serif",
+                background: 'rgba(255, 255, 255, 0.3)',
+                backdropFilter: 'blur(5px)',
+                '& fieldset': {
+                  border: '1px solid rgba(255, 255, 255, 0.4)',
+                },
+                '&:hover fieldset': {
+                  border: '1px solid rgba(255, 255, 255, 0.5)',
+                },
+              },
+            }}
+          />
+          <TextField
+            fullWidth
+            label="Hero Image 2 Alt Text"
+            defaultValue={heroImg2Alt}
+            onChange={(e) => setAlt2(e.target.value)}
+            placeholder="This is a picture of..."
+            margin="normal"
+            sx={{
+              '& .MuiOutlinedInput-root': {
+                fontFamily: "'Michroma', sans-serif",
+                background: 'rgba(255, 255, 255, 0.3)',
+                backdropFilter: 'blur(5px)',
+                '& fieldset': {
+                  border: '1px solid rgba(255, 255, 255, 0.4)',
+                },
+                '&:hover fieldset': {
+                  border: '1px solid rgba(255, 255, 255, 0.5)',
+                },
+              },
+            }}
+          />
         </form>
       </DialogContent>
       <DialogActions sx={{ p: 2 }}>
@@ -162,3 +185,4 @@ export default function EditAboutMe({ isEditBtnClicked, handleClick, aboutMe, id
     </Dialog>
   )
 }
+

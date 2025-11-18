@@ -1,6 +1,7 @@
 import React from 'react'
 
 export default function Welcome({ userLayout }) {
+  console.log('userLayout', userLayout)
   return (
     <>
       <div style={{
