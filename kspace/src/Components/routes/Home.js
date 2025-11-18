@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import EditButton from '../layout/EditButton'
 import { useLocation } from 'react-router-dom'
 import axios from 'axios'
-import { Container, Box, CircularProgress, Alert, Typography } from '@mui/material'
+import { Container, Box, CircularProgress, Alert, Typography, Card, CardContent } from '@mui/material'
 
 export default function Home() {
   const location = useLocation()
@@ -76,15 +76,63 @@ export default function Home() {
   }
 
   if (loading) {
+    const glassmorphismStyle = {
+      background: 'rgba(255, 255, 255, 0.25)',
+      backdropFilter: 'blur(10px) saturate(180%)',
+      WebkitBackdropFilter: 'blur(10px) saturate(180%)',
+      border: '2px solid rgba(255, 255, 255, 0.3)',
+      borderRadius: '20px',
+      boxShadow: '0 8px 32px 0 rgba(31, 38, 135, 0.37)',
+    }
     return (
-      <Container maxWidth="lg" sx={{ py: 8, display: 'flex', justifyContent: 'center', alignItems: 'center', minHeight: '50vh' }}>
-        <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 2 }}>
-          <CircularProgress size={60} />
-          <Typography variant="body1" color="text.secondary">
-            Loading your homepage...
-          </Typography>
-        </Box>
-      </Container>
+      <Box
+        sx={{
+          minHeight: '100vh',
+          background: 'linear-gradient(135deg, #87CEEB 0%, #90EE90 50%, #ADD8E6 100%)',
+          backgroundSize: 'cover',
+          backgroundPosition: 'center',
+          backgroundAttachment: 'fixed',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          pt: { xs: 2, sm: 3, md: 4 },
+          pb: { xs: 2, sm: 3, md: 4 },
+          px: { xs: 1, sm: 2, md: 3 },
+        }}
+      >
+        <Container maxWidth="sm">
+          <Card sx={glassmorphismStyle}>
+            <CardContent sx={{ p: { xs: 4, sm: 5, md: 6 }, textAlign: 'center' }}>
+              <CircularProgress 
+                size={60} 
+                sx={{ 
+                  mb: 2,
+                  color: 'rgba(0, 0, 0, 0.7)',
+                }} 
+              />
+              <Typography 
+                variant="h6" 
+                sx={{
+                  fontFamily: "'Michroma', sans-serif",
+                  fontWeight: 'bold',
+                  mb: 1,
+                }}
+              >
+                Loading...
+              </Typography>
+              <Typography 
+                variant="body2" 
+                sx={{
+                  fontFamily: "'Michroma', sans-serif",
+                  color: 'rgba(0, 0, 0, 0.7)',
+                }}
+              >
+                Loading your homepage...
+              </Typography>
+            </CardContent>
+          </Card>
+        </Container>
+      </Box>
     )
   }
 

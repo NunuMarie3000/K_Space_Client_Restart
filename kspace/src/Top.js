@@ -8,6 +8,7 @@ import Login from './Components/auth/Login';
 import Register from './Components/auth/Register';
 import ForgotPassword from './Components/auth/ForgotPassword';
 import ResetPassword from './Components/auth/ResetPassword';
+import LoadingPage from './Components/LoadingPage';
 import axios from 'axios';
 
 export default function Top() {
@@ -68,7 +69,7 @@ export default function Top() {
   const switchToForgotPassword = () => setView('forgot-password')
 
   if (loading) {
-    return <div>Loading...</div>
+    return <LoadingPage />
   }
 
   if (user && isAuthenticated) {

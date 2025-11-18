@@ -1,5 +1,5 @@
 import React from 'react'
-import { Box, Container, Card, CardContent, Typography } from '@mui/material'
+import { Box, Container, Card, CardContent, Typography, CircularProgress } from '@mui/material'
 import Footer from '../body/Footer'
 
 export default function Welcome({ userLayout }) {
@@ -23,7 +23,46 @@ export default function Welcome({ userLayout }) {
       : 'linear-gradient(135deg, #87CEEB 0%, #90EE90 50%, #ADD8E6 100%)'
 
   if (!userLayout) {
-    return <Box>Loading...</Box>
+    return (
+      <Box
+        sx={{
+          minHeight: '100vh',
+          background: 'linear-gradient(135deg, #87CEEB 0%, #90EE90 50%, #ADD8E6 100%)',
+          backgroundSize: 'cover',
+          backgroundPosition: 'center',
+          backgroundAttachment: 'fixed',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          pt: { xs: 2, sm: 3, md: 4 },
+          pb: { xs: 2, sm: 3, md: 4 },
+          px: { xs: 1, sm: 2, md: 3 },
+        }}
+      >
+        <Container maxWidth="sm">
+          <Card sx={glassmorphismStyle}>
+            <CardContent sx={{ p: { xs: 4, sm: 5, md: 6 }, textAlign: 'center' }}>
+              <CircularProgress 
+                size={60} 
+                sx={{ 
+                  mb: 2,
+                  color: 'rgba(0, 0, 0, 0.7)',
+                }} 
+              />
+              <Typography 
+                variant="h6" 
+                sx={{
+                  fontFamily: "'Michroma', sans-serif",
+                  fontWeight: 'bold',
+                }}
+              >
+                Loading...
+              </Typography>
+            </CardContent>
+          </Card>
+        </Container>
+      </Box>
+    )
   }
 
   return (

@@ -7,7 +7,7 @@ import React, { useState, useEffect } from 'react'
 import { useSelector } from 'react-redux'
 import { useLocation } from 'react-router-dom'
 import axios from 'axios'
-import { Box, Container, Typography } from '@mui/material'
+import { Box, Container, Typography, Card, CardContent, CircularProgress } from '@mui/material'
 import BlogEntry from '../body/blog/BlogEntry'
 import AddBlogEntry from '../body/blog/edit/AddBlogEntry'
 import Footer from '../body/Footer'
@@ -45,7 +45,54 @@ export default function EditBlog() {
       : 'linear-gradient(135deg, #87CEEB 0%, #90EE90 50%, #ADD8E6 100%)'
 
   if (!userLayout) {
-    return <Box>Loading...</Box>
+    const glassmorphismStyle = {
+      background: 'rgba(255, 255, 255, 0.25)',
+      backdropFilter: 'blur(10px) saturate(180%)',
+      WebkitBackdropFilter: 'blur(10px) saturate(180%)',
+      border: '2px solid rgba(255, 255, 255, 0.3)',
+      borderRadius: '20px',
+      boxShadow: '0 8px 32px 0 rgba(31, 38, 135, 0.37)',
+    }
+    return (
+      <Box
+        sx={{
+          minHeight: '100vh',
+          background: 'linear-gradient(135deg, #87CEEB 0%, #90EE90 50%, #ADD8E6 100%)',
+          backgroundSize: 'cover',
+          backgroundPosition: 'center',
+          backgroundAttachment: 'fixed',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          pt: { xs: 2, sm: 3, md: 4 },
+          pb: { xs: 2, sm: 3, md: 4 },
+          px: { xs: 1, sm: 2, md: 3 },
+        }}
+      >
+        <Container maxWidth="sm">
+          <Card sx={glassmorphismStyle}>
+            <CardContent sx={{ p: { xs: 4, sm: 5, md: 6 }, textAlign: 'center' }}>
+              <CircularProgress 
+                size={60} 
+                sx={{ 
+                  mb: 2,
+                  color: 'rgba(0, 0, 0, 0.7)',
+                }} 
+              />
+              <Typography 
+                variant="h6" 
+                sx={{
+                  fontFamily: "'Michroma', sans-serif",
+                  fontWeight: 'bold',
+                }}
+              >
+                Loading...
+              </Typography>
+            </CardContent>
+          </Card>
+        </Container>
+      </Box>
+    )
   }
 
   return (
