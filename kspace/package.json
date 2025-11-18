@@ -2,6 +2,10 @@
   "name": "kspace",
   "version": "0.1.0",
   "private": true,
+  "engines": {
+    "node": ">=25.2.1",
+    "npm": ">=10.0.0"
+  },
   "dependencies": {
     "@auth0/auth0-react": "^1.11.0",
     "@emotion/react": "^11.14.0",
