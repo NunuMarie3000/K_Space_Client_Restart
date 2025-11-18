@@ -31,8 +31,7 @@ export default function Register({ onRegister, switchToLogin }) {
         sub: response.data.user._id
       };
 
-      localStorage.setItem('token', response.data.token)
-      onRegister(formattedUser)
+      onRegister(formattedUser, response.data.token)
     } catch (err) {
       console.error('Registration error:', err)
 

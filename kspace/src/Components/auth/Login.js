@@ -22,11 +22,8 @@ export default function Login({ onLogin, switchToRegister, switchToForgotPasswor
         }
       });
       
-      // Store token
-      localStorage.setItem('token', response.data.token)
-      
-      // Call parent handler with user data
-      onLogin(response.data.user)
+      // Call parent handler with user data and token
+      onLogin(response.data.user, response.data.token)
     } catch (err) {
       setError(err.response?.data?.error || 'Login failed')
     }

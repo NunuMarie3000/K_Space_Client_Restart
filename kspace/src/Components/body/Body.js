@@ -20,6 +20,7 @@ import AboutMe from './aboutMe/AboutMe'
 import MainBlog from './blog/MainBlog'
 import LoadingPage from '../LoadingPage'
 import Footer from './Footer'
+import { Container, Box } from '@mui/material'
 
 export default class Body extends Component {
   constructor(props) {
@@ -52,6 +53,13 @@ export default class Body extends Component {
     } catch (error) {
       console.log(error.message)
     }
+  }
+
+  getLayout = async () => {
+    // This method is available for future use if needed
+    // Currently EditHero reloads the page, so this is a placeholder
+    // If we want to refresh layout without reload, we'd need to update parent component
+    return null
   }
 
   getAllRequestInfo = async () => {
@@ -87,23 +95,147 @@ export default class Body extends Component {
     const { _id } = this.state.userData
     const { userLayout, userInfoAuth } = this.props
     const { profile, aboutMe, blogs } = this.state
+    
+    // Frutiger Aero gradient background
+    const frutigerAeroGradient = userLayout?.backImage 
+      ? `linear-gradient(135deg, rgba(135, 206, 250, 0.3) 0%, rgba(144, 238, 144, 0.3) 50%, rgba(173, 216, 230, 0.3) 100%), url(${userLayout.backImage})`
+      : userLayout?.backColor 
+        ? `linear-gradient(135deg, rgba(135, 206, 250, 0.2) 0%, rgba(144, 238, 144, 0.2) 50%, rgba(173, 216, 230, 0.2) 100%), ${userLayout.backColor}`
+        : 'linear-gradient(135deg, #87CEEB 0%, #90EE90 50%, #ADD8E6 100%)'
+
+    if (this.state.isSiteLoading) {
+      return <LoadingPage />
+    }
+
     return (
-      <>
-        {this.state.isSiteLoading ? <LoadingPage /> : <div className='body-container'
-          style={{
-            // backgroundColor: userLayout ? userLayout.backColor : '#fff',
-            // backgroundImage: userLayout ? `url(${userLayout.backImage})` : 'none',
-            color: userLayout ? userLayout.fontBodyColor : 'black', 
-          }}>
-          {profile !== '' && <Profile getProfile={this.getProfile} userInfoAuth={userInfoAuth} id={userLayout.user} profile={profile} />}
-          <Contact />
-          {userLayout && <InterestsC interests={aboutMe.interests} />}
-          {userLayout && <Hero userLayout={userLayout} />}
-          {aboutMe !== '' && <AboutMe aboutMe={aboutMe} getAboutMe={this.getAboutMe} id={userLayout.user} />}
-          {blogs !== '' && <MainBlog blogs={blogs} id={_id} />}
-          <Footer/>
-        </div>}
-      </>
+      <Box
+        sx={{
+          minHeight: '100vh',
+          background: frutigerAeroGradient,
+          backgroundSize: 'cover',
+          backgroundPosition: 'center',
+          backgroundAttachment: 'fixed',
+          color: userLayout ? userLayout.fontBodyColor : 'black',
+          pt: { xs: 0, sm: 0, md: 0 },
+          pb: { xs: 2, sm: 2, md: 1.5 },
+          px: { xs: 0, sm: 0, md: 0 },
+        }}
+      >
+        <Container maxWidth="xl" sx={{ px: { xs: 1, sm: 1.5, md: 2 }, pt: { xs: 0.5, sm: 0.75, md: 1 } }}>
+          {/* Original MySpace-inspired grid layout using CSS Grid */}
+          <Box
+            sx={{
+              display: 'grid',
+              gridTemplateColumns: { 
+                xs: '1fr', 
+                sm: '1fr', 
+                md: '0.5fr 1fr 1fr' 
+              },
+              gridTemplateRows: { 
+                xs: 'auto', 
+                sm: 'auto', 
+                md: 'auto auto auto auto auto' 
+              },
+              gap: { xs: 1, sm: 1.5, md: 2 },
+              rowGap: { xs: 1, sm: 1.5, md: 1.5 },
+            }}
+          >
+            {/* Left Column - Profile (tall, top) - spans rows 1-2 */}
+            {profile !== '' && (
+              <Box
+                sx={{
+                  gridColumn: { xs: '1', md: '1' },
+                  gridRow: { xs: 'auto', md: '1 / 3' },
+                }}
+              >
+                <Profile 
+                  getProfile={this.getProfile} 
+                  userInfoAuth={userInfoAuth} 
+                  id={userLayout.user} 
+                  profile={profile} 
+                />
+              </Box>
+            )}
+
+            {/* Middle Column - Hero (tall, top) - spans rows 1-2 */}
+            {userLayout && (
+              <Box
+                sx={{
+                  gridColumn: { xs: '1', md: '2' },
+                  gridRow: { xs: 'auto', md: '1 / 3' },
+                }}
+              >
+                <Hero />
+              </Box>
+            )}
+
+            {/* Right Column - About Me (tall, top) - spans rows 1-2 */}
+            {aboutMe !== '' && (
+              <Box
+                sx={{
+                  gridColumn: { xs: '1', md: '3' },
+                  gridRow: { xs: 'auto', md: '1 / 3' },
+                }}
+              >
+                <AboutMe 
+                  aboutMe={aboutMe} 
+                  getAboutMe={this.getAboutMe} 
+                  id={userLayout.user} 
+                />
+              </Box>
+            )}
+
+            {/* Left Column - Contact (middle) - row 3 */}
+            <Box
+              sx={{
+                gridColumn: { xs: '1', md: '1' },
+                gridRow: { xs: 'auto', md: '3' },
+              }}
+            >
+              <Contact />
+            </Box>
+
+            {/* Middle+Right Columns - Blog (wide, bottom) - spans columns 2-3, row 3 */}
+            {blogs !== '' && blogs.length > 0 && (
+              <Box
+                sx={{
+                  gridColumn: { xs: '1', md: '2 / 4' },
+                  gridRow: { xs: 'auto', md: '3' },
+                }}
+              >
+                <MainBlog blogs={blogs} id={_id} userLayout={userLayout} />
+              </Box>
+            )}
+
+            {/* Left Column - Interests (bottom) - row 4 */}
+            {userLayout && aboutMe?.interests && (
+              <Box
+                sx={{
+                  gridColumn: { xs: '1', md: '1' },
+                  gridRow: { xs: 'auto', md: '4' },
+                }}
+              >
+                <InterestsC 
+                  interests={aboutMe.interests} 
+                  id={userLayout.user}
+                  getAboutMe={this.getAboutMe}
+                  aboutMe={aboutMe}
+                />
+              </Box>
+            )}
+
+            {/* Footer - Full width at bottom - spans all columns, row 5 */}
+            <Box
+              sx={{
+                gridColumn: { xs: '1', md: '1 / 4' },
+                gridRow: { xs: 'auto', md: '5' },
+              }}
+            >
+              <Footer />
+            </Box>
+          </Box>
+        </Container>
+      </Box>
     )
   }
 }

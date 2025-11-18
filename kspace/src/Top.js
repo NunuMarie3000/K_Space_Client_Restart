@@ -1,5 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { useSearchParams } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
+import { setCredentials, logout as logoutAction } from './store/authSlice';
+import { clearUserData } from './store/userDataSlice';
 import App from './App';
 import Login from './Components/auth/Login';
 import Register from './Components/auth/Register';
@@ -8,7 +11,8 @@ import ResetPassword from './Components/auth/ResetPassword';
 import axios from 'axios';
 
 export default function Top() {
-  const [user, setUser] = useState(null);
+  const dispatch = useDispatch();
+  const { user, isAuthenticated } = useSelector((state) => state.auth);
   const [loading, setLoading] = useState(true);
   const [view, setView] = useState('login');
   const [searchParams] = useSearchParams();
@@ -24,33 +28,39 @@ export default function Top() {
     if (reset_token && _email) {
       setView('reset-password')
     }
-    // Check for existing token on load
-    const authToken = localStorage.getItem('token')
-    if (authToken) {
-      axios.get(`${process.env.REACT_APP_SERVER}verify`, {
-        headers: { Authorization: `Bearer ${authToken}` }
-      })
-        .then(res => {
-          setUser(res.data.user)
+    // Check for existing token on load - but only if not already authenticated from Redux
+    if (!isAuthenticated) {
+      const authToken = localStorage.getItem('token')
+      if (authToken) {
+        axios.get(`${process.env.REACT_APP_SERVER}verify`, {
+          headers: { Authorization: `Bearer ${authToken}` }
         })
-        .catch(() => {
-          localStorage.removeItem('token')
-        })
-        .finally(() => {
-          setLoading(false)
-        })
+          .then(res => {
+            dispatch(setCredentials({ user: res.data.user, token: authToken }))
+          })
+          .catch(() => {
+            localStorage.removeItem('token')
+            dispatch(logoutAction())
+          })
+          .finally(() => {
+            setLoading(false)
+          })
+      } else {
+        setLoading(false)
+      }
     } else {
+      // Already authenticated from persisted state
       setLoading(false)
     }
-  }, [searchParams])
+  }, [email, resetToken, searchParams, isAuthenticated, dispatch])
 
-  const handleLogin = (userData) => {
-    setUser(userData)
+  const handleLogin = (userData, token) => {
+    dispatch(setCredentials({ user: userData, token }))
   }
 
   const handleLogout = () => {
-    localStorage.removeItem('token')
-    setUser(null)
+    dispatch(logoutAction())
+    dispatch(clearUserData())
   }
 
   const switchToLogin = () => setView('login')
@@ -61,8 +71,8 @@ export default function Top() {
     return <div>Loading...</div>
   }
 
-  if (user) {
-    return <App user={user} logout={handleLogout} />
+  if (user && isAuthenticated) {
+    return <App logout={handleLogout} />
   }
 
   switch (view) {

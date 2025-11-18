@@ -1,4 +1,5 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
 import axios from 'axios'
 import LoadingPage from './Components/LoadingPage'
 import Navigation from './Components/body/Navigation'
@@ -8,16 +9,18 @@ import Blog from './Components/routes/Blog'
 import EditBlog from './Components/routes/EditBlog'
 import About from './Components/routes/About'
 import { Routes, Route } from 'react-router-dom'
+import { setUserLayout, setUserId, setLoading } from './store/userDataSlice'
 
-export default function App({ logout, user }) {
-  const [userLayout, setLayout] = useState(null)
-  const [userId, setUserId] = useState(null)
-  const [weLoading, setWeLoading] = useState(false)
-  // now that i have user on login, i can use it to get email and whatnot
+export default function App({ logout }) {
+  const dispatch = useDispatch()
+  const { user } = useSelector((state) => state.auth)
+  const { userLayout, userId, loading: weLoading } = useSelector((state) => state.userData)
 
   const getUserInfoFromDB = async () => {
+    if (!user) return
+    
     console.log('getUserInfoFromDB - user:', user);
-    setWeLoading(true)
+    dispatch(setLoading(true))
     const email = user.email
     try {
       const url = `${process.env.REACT_APP_SERVER}${email}`
@@ -28,18 +31,19 @@ export default function App({ logout, user }) {
         // New user flow - just create defaults since user already exists
         await createDefaults(user.sub) // user.sub contains the user._id from registration
         await getLayout(user.sub)
-        setUserId(user.sub)
+        dispatch(setUserId(user.sub))
       } else {
         // Existing user flow
-        setUserId(res.data._id)
+        dispatch(setUserId(res.data._id))
         await getLayout(res.data._id)
       }
     } catch (error) {
       console.log('Error in getUserInfoFromDB:', error)
     } finally {
-      setWeLoading(false)
+      dispatch(setLoading(false))
     }
   }
+  
   const getLayout = async (id) => {
     const url = `${process.env.REACT_APP_SERVER}layout/${id}`
     try {
@@ -52,9 +56,9 @@ export default function App({ logout, user }) {
         await createDefaults(id)
         // Try getting layout again after creating defaults
         const newResponse = await axios.get(url)
-        setLayout(newResponse.data[0])
+        dispatch(setUserLayout(newResponse.data[0]))
       } else {
-        setLayout(response.data[0])
+        dispatch(setUserLayout(response.data[0]))
       }
     } catch (error) {
       console.error('Error in getLayout:', error.message)
@@ -63,7 +67,7 @@ export default function App({ logout, user }) {
         console.log('Layout not found, creating defaults...')
         await createDefaults(id)
         const newResponse = await axios.get(url)
-        setLayout(newResponse.data[0])
+        dispatch(setUserLayout(newResponse.data[0]))
       }
     }
   }
@@ -88,15 +92,17 @@ export default function App({ logout, user }) {
   }
 
   useEffect(() => {
-    getUserInfoFromDB()
+    if (user && !userLayout) {
+      getUserInfoFromDB()
+    }
     //eslint-disable-next-line
-  }, [])
+  }, [user])
 
   return (
     <>
       {weLoading && <LoadingPage />}
 
-      {userLayout && (
+      {userLayout && user && (
         <>
           <Navigation userID={userId} userInfoAuth={user} logout={logout} userLayout={userLayout} />
           <Routes>
