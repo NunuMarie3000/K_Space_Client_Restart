@@ -12,7 +12,7 @@ export default function Login({ onLogin, switchToRegister, switchToForgotPasswor
       const userData = { email, password };
       const response = await axios({
         method: 'post',
-        url: 'http://localhost:3002/auth/login',
+        url: `${process.env.REACT_APP_SERVER}auth/login`,
         data: {
           email: userData.email,
           password: userData.password

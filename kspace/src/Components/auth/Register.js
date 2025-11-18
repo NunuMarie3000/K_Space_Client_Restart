@@ -12,7 +12,7 @@ export default function Register({ onRegister, switchToLogin }) {
     try {
       const response = await axios({
         method: 'post',
-        url: 'http://localhost:3002/auth/register',
+        url: `${process.env.REACT_APP_SERVER}auth/register`,
         data: {
           username,
           email,
