@@ -41,7 +41,7 @@ export default class Body extends Component {
     try {
       await axios.get(url).then(res => this.setState({ profile: res.data[0] }))
     } catch (error) {
-      console.log(error.message)
+      console.error(error.message)
     }
   }
 
@@ -51,7 +51,7 @@ export default class Body extends Component {
     try {
       await axios.get(url).then(res => this.setState({ aboutMe: res.data[0] }))
     } catch (error) {
-      console.log(error.message)
+      console.error(error.message)
     }
   }
 
@@ -81,7 +81,7 @@ export default class Body extends Component {
         }
       ))
     } catch (error) {
-      console.log(error)
+      console.error(error)
     }
   }
 

@@ -23,9 +23,9 @@ export default function Top() {
   useEffect(() => {
     // Check if we have reset password params
     const reset_token = searchParams.get('token')
-    setResetToken(resetToken)
+    setResetToken(reset_token)
     const _email = searchParams.get('email')
-    setEmail(email)
+    setEmail(_email)
     if (reset_token && _email) {
       setView('reset-password')
     }
@@ -84,7 +84,7 @@ export default function Top() {
     case 'reset-password':
       return (
         <ResetPassword
-          resetToken={resetToken}
+          token={resetToken}
           email={email}
           switchToLogin={switchToLogin}
         />

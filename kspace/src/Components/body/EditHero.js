@@ -40,7 +40,7 @@ export default function EditHero({ isEditBtnClicked, handleClick }) {
       dispatch(updateUserLayout(updatedLayout))
       handleClick()
     } catch (error) {
-      console.log(error.message)
+      console.error(error.message)
     }
   }
 

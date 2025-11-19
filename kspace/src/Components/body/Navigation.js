@@ -4,16 +4,6 @@ import { Outlet, Link } from 'react-router-dom'
 import { Box } from '@mui/material'
 
 export default function Navigation({ userLayout, logout, userInfoAuth, userId }) {
-  // console.log(userId)
-  // if (!userLayout || !userLayout.user) {
-  //   return <div>Loading...</div>
-  // }
-  console.log(userInfoAuth)
-  console.log('userLayout: ', userLayout)
-  // home route can only be passed one object via state
-  // needs userLayout, getLayout, and userInfoAuth
-  // but i can also copy and paste getLayout function
-  // console.log(userLayout)
   const dataForHome = {
     ...userInfoAuth,
     userLayoutId:userLayout.user,

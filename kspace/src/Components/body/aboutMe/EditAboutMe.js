@@ -38,7 +38,7 @@ export default function EditAboutMe({ isEditBtnClicked, handleClick, aboutMe, id
       getAboutMe()
       handleClick()
     } catch (error) {
-      console.log(error.message)
+      console.error(error.message)
     }
   }
 
