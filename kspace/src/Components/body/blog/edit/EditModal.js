@@ -1,9 +1,12 @@
 import axios from 'axios'
 import React, { useState } from 'react'
-import { Modal, Form, Button } from 'react-bootstrap'
+import { Dialog, DialogTitle, DialogContent, DialogActions, TextField, Button, IconButton } from '@mui/material'
+import EditIcon from '@mui/icons-material/Edit'
+import { useSelector } from 'react-redux'
+import { modalPaperStyle, modalTitleStyle, modalTextFieldStyle, modalButtonStyle, getModalPrimaryButtonStyle } from '../../../../styles'
 
 export default function EditModal({ editMode, toggleEditMode, blogId, authorId, title, body, date_of_entry, getBlogs }) {
-
+  const userLayout = useSelector((state) => state.userData.userLayout)
   const [updatedTitle, setTitle] = useState('')
   const [updatedBody, setBody] = useState('')
 
@@ -51,37 +54,69 @@ export default function EditModal({ editMode, toggleEditMode, blogId, authorId, 
 
   return (
     <>
-      <i onClick={toggleEditMode} className="fa-solid fa-pencil"></i>
+      <IconButton 
+        onClick={toggleEditMode}
+        size="small"
+        sx={{
+          color: 'text.primary',
+          '&:hover': {
+            backgroundColor: 'rgba(255, 255, 255, 0.1)',
+          },
+        }}
+      >
+        <EditIcon fontSize="small" />
+      </IconButton>
 
-      <Modal show={editMode} onHide={handleClose}>
-        <Modal.Header closeButton>
-          <Modal.Title>Edit Post</Modal.Title>
-        </Modal.Header>
-        <Modal.Body>
-
-          <Form onSubmit={handleSubmit} >
-
-            <Form.Group className="mb-3" controlId="post_title">
-              <Form.Label>Title</Form.Label>
-              <Form.Control type="text" defaultValue={title} onChange={(e)=>setTitle(e.target.value)}  />
-            </Form.Group>
-
-            <Form.Group className="mb-3" controlId="post_body">
-              <Form.Label>Body</Form.Label>
-              <Form.Control as="textarea" rows={3}  type="text" defaultValue={body} onChange={(e)=>setBody(e.target.value)}  />
-            </Form.Group>
-            
-            <Button variant="primary" type="submit">
-              Submit
-            </Button>
-          </Form>
-        </Modal.Body>
-        <Modal.Footer>
-          <Button variant="primary" onClick={handleClose}>
+      <Dialog 
+        open={editMode} 
+        onClose={handleClose}
+        maxWidth="sm"
+        fullWidth
+        PaperProps={{
+          sx: modalPaperStyle
+        }}
+      >
+        <DialogTitle sx={modalTitleStyle}>
+          Edit Post
+        </DialogTitle>
+        <DialogContent>
+          <form onSubmit={handleSubmit}>
+            <TextField
+              fullWidth
+              label="Title"
+              defaultValue={title}
+              onChange={(e) => setTitle(e.target.value)}
+              margin="normal"
+              sx={modalTextFieldStyle}
+            />
+            <TextField
+              fullWidth
+              label="Body"
+              defaultValue={body}
+              onChange={(e) => setBody(e.target.value)}
+              multiline
+              rows={4}
+              margin="normal"
+              sx={modalTextFieldStyle}
+            />
+          </form>
+        </DialogContent>
+        <DialogActions sx={{ p: 2 }}>
+          <Button 
+            onClick={handleClose}
+            sx={modalButtonStyle}
+          >
             Close
           </Button>
-        </Modal.Footer>
-      </Modal>
+          <Button 
+            onClick={handleSubmit}
+            variant="contained"
+            sx={getModalPrimaryButtonStyle(userLayout)}
+          >
+            Submit
+          </Button>
+        </DialogActions>
+      </Dialog>
     </>
   )
 }

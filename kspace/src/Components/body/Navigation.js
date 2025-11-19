@@ -2,6 +2,7 @@ import React from 'react'
 import Header from '../header/Header'
 import { Outlet, Link } from 'react-router-dom'
 import { Box } from '@mui/material'
+import { getCustomGradient, typography, getTextColor } from '../../styles'
 
 export default function Navigation({ userLayout, logout, userInfoAuth, userId }) {
   const dataForHome = {
@@ -10,21 +11,17 @@ export default function Navigation({ userLayout, logout, userInfoAuth, userId })
   }
 
   // Frutiger Aero gradient background
-  const frutigerAeroGradient = userLayout?.backImage 
-    ? `linear-gradient(135deg, rgba(135, 206, 250, 0.3) 0%, rgba(144, 238, 144, 0.3) 50%, rgba(173, 216, 230, 0.3) 100%), url(${userLayout.backImage})`
-    : userLayout?.backColor 
-      ? `linear-gradient(135deg, rgba(135, 206, 250, 0.2) 0%, rgba(144, 238, 144, 0.2) 50%, rgba(173, 216, 230, 0.2) 100%), ${userLayout.backColor}`
-      : 'linear-gradient(135deg, #87CEEB 0%, #90EE90 50%, #ADD8E6 100%)'
+  const frutigerAeroGradient = getCustomGradient(userLayout)
 
   return (
     <Box
       sx={{
-        fontFamily: "'Michroma', sans-serif",
+        ...typography,
         background: frutigerAeroGradient,
         backgroundSize: 'cover',
         backgroundPosition: 'center',
         backgroundAttachment: 'fixed',
-        color: userLayout ? userLayout.fontBodyColor : 'black',
+        color: getTextColor(userLayout),
         pt: { xs: 1, sm: 1.5, md: 2 },
         pb: { xs: 0, sm: 0, md: 0 },
         px: { xs: 1, sm: 1.5, md: 2 },
@@ -46,14 +43,14 @@ export default function Navigation({ userLayout, logout, userInfoAuth, userId })
             alignItems: 'flex-end',
             fontSize: { xs: '14px', sm: '16px' },
             fontWeight: 800,
-            fontFamily: "'Michroma', sans-serif",
+            ...typography,
             flexWrap: 'wrap',
             gap: 1,
           }}
         >
           <Link 
             style={{
-              color: userLayout ? userLayout.fontBodyColor : 'black',
+              color: getTextColor(userLayout),
               textDecoration: 'none',
               padding: '8px 12px',
               borderRadius: '10px',
@@ -77,7 +74,7 @@ export default function Navigation({ userLayout, logout, userInfoAuth, userId })
           </Link>
           <Link 
             style={{
-              color: userLayout ? userLayout.fontBodyColor : 'black',
+              color: getTextColor(userLayout),
               textDecoration: 'none',
               padding: '8px 12px',
               borderRadius: '10px',
@@ -101,7 +98,7 @@ export default function Navigation({ userLayout, logout, userInfoAuth, userId })
           </Link>
           <Link 
             style={{
-              color: userLayout ? userLayout.fontBodyColor : 'black',
+              color: getTextColor(userLayout),
               textDecoration: 'none',
               padding: '8px 12px',
               borderRadius: '10px',
@@ -125,7 +122,7 @@ export default function Navigation({ userLayout, logout, userInfoAuth, userId })
           </Link>
           <Link 
             style={{
-              color: userLayout ? userLayout.fontBodyColor : 'black',
+              color: getTextColor(userLayout),
               textDecoration: 'none',
               padding: '8px 12px',
               borderRadius: '10px',

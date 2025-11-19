@@ -11,6 +11,15 @@ import { Box, Container, Typography, Card, CardContent, CircularProgress } from 
 import BlogEntry from '../body/blog/BlogEntry'
 import AddBlogEntry from '../body/blog/edit/AddBlogEntry'
 import Footer from '../body/Footer'
+import {
+  glassmorphismStyle,
+  pageContainer,
+  appColors,
+  getCustomGradient,
+  getHeadingStyle,
+  getBodyTextStyle,
+  getTextColor,
+} from '../../styles'
 
 export default function EditBlog() {
   const [blogs, setBlogs] = useState('')
@@ -37,38 +46,9 @@ export default function EditBlog() {
     //eslint-disable-next-line
   }, [userId])
 
-  // Frutiger Aero gradient background
-  const frutigerAeroGradient = userLayout?.backImage 
-    ? `linear-gradient(135deg, rgba(135, 206, 250, 0.3) 0%, rgba(144, 238, 144, 0.3) 50%, rgba(173, 216, 230, 0.3) 100%), url(${userLayout.backImage})`
-    : userLayout?.backColor 
-      ? `linear-gradient(135deg, rgba(135, 206, 250, 0.2) 0%, rgba(144, 238, 144, 0.2) 50%, rgba(173, 216, 230, 0.2) 100%), ${userLayout.backColor}`
-      : 'linear-gradient(135deg, #87CEEB 0%, #90EE90 50%, #ADD8E6 100%)'
-
   if (!userLayout) {
-    const glassmorphismStyle = {
-      background: 'rgba(255, 255, 255, 0.25)',
-      backdropFilter: 'blur(10px) saturate(180%)',
-      WebkitBackdropFilter: 'blur(10px) saturate(180%)',
-      border: '2px solid rgba(255, 255, 255, 0.3)',
-      borderRadius: '20px',
-      boxShadow: '0 8px 32px 0 rgba(31, 38, 135, 0.37)',
-    }
     return (
-      <Box
-        sx={{
-          minHeight: '100vh',
-          background: 'linear-gradient(135deg, #87CEEB 0%, #90EE90 50%, #ADD8E6 100%)',
-          backgroundSize: 'cover',
-          backgroundPosition: 'center',
-          backgroundAttachment: 'fixed',
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-          pt: { xs: 2, sm: 3, md: 4 },
-          pb: { xs: 2, sm: 3, md: 4 },
-          px: { xs: 1, sm: 2, md: 3 },
-        }}
-      >
+      <Box sx={pageContainer}>
         <Container maxWidth="sm">
           <Card sx={glassmorphismStyle}>
             <CardContent sx={{ p: { xs: 4, sm: 5, md: 6 }, textAlign: 'center' }}>
@@ -76,7 +56,7 @@ export default function EditBlog() {
                 size={60} 
                 sx={{ 
                   mb: 2,
-                  color: 'rgba(0, 0, 0, 0.7)',
+                  color: appColors.textPrimary,
                 }} 
               />
               <Typography 
@@ -84,6 +64,7 @@ export default function EditBlog() {
                 sx={{
                   fontFamily: "'Michroma', sans-serif",
                   fontWeight: 'bold',
+                  color: appColors.textPrimary,
                 }}
               >
                 Loading...
@@ -99,11 +80,11 @@ export default function EditBlog() {
     <Box
       sx={{
         minHeight: '100vh',
-        background: frutigerAeroGradient,
+        background: getCustomGradient(userLayout),
         backgroundSize: 'cover',
         backgroundPosition: 'center',
         backgroundAttachment: 'fixed',
-        color: userLayout ? userLayout.fontBodyColor : 'black',
+        color: getTextColor(userLayout),
         pt: { xs: 2, sm: 3, md: 4 },
         pb: { xs: 2, sm: 3, md: 4 },
         px: { xs: 1, sm: 2, md: 3 },
@@ -114,11 +95,8 @@ export default function EditBlog() {
           variant="h3" 
           component="h1"
           sx={{
-            fontFamily: "'Michroma', sans-serif",
-            fontWeight: 'bold',
+            ...getHeadingStyle(userLayout, 'h1'),
             mb: 3,
-            textAlign: 'center',
-            textShadow: '0 2px 10px rgba(255, 255, 255, 0.3)',
           }}
         >
           Edit Blog Posts
@@ -149,11 +127,7 @@ export default function EditBlog() {
           ) : (
             <Box
               sx={{
-                background: 'rgba(255, 255, 255, 0.25)',
-                backdropFilter: 'blur(10px) saturate(180%)',
-                WebkitBackdropFilter: 'blur(10px) saturate(180%)',
-                border: '2px solid rgba(255, 255, 255, 0.3)',
-                borderRadius: '20px',
+                ...glassmorphismStyle,
                 p: 3,
                 textAlign: 'center',
               }}
@@ -161,8 +135,9 @@ export default function EditBlog() {
               <Typography 
                 variant="body1"
                 sx={{
-                  fontFamily: "'Michroma', sans-serif",
-                  fontStyle: 'italic',
+                  ...getBodyTextStyle(userLayout, {
+                    fontStyle: 'italic',
+                  }),
                 }}
               >
                 No blog posts yet. Create your first post!

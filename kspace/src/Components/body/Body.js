@@ -10,6 +10,7 @@
 // login components
 // this component needs to make a get request at with useEffect, or maybe i'll use class component for this...componentDidMount
 import React, { Component } from 'react'
+import { connect } from 'react-redux'
 import axios from 'axios'
 import Profile from './profile/Profile'
 // import Navigation from './Navigation'
@@ -21,8 +22,9 @@ import MainBlog from './blog/MainBlog'
 import LoadingPage from '../LoadingPage'
 import Footer from './Footer'
 import { Container, Box } from '@mui/material'
+import { getCustomGradient, getTextColor } from '../../styles'
 
-export default class Body extends Component {
+class Body extends Component {
   constructor(props) {
     super(props)
 
@@ -93,15 +95,13 @@ export default class Body extends Component {
 
   render() {
     const { _id } = this.state.userData
-    const { userLayout, userInfoAuth } = this.props
+    // Get userLayout from Redux if available, otherwise from props (for backward compatibility)
+    const userLayout = this.props.userLayoutFromRedux || this.props.userLayout
+    const { userInfoAuth } = this.props
     const { profile, aboutMe, blogs } = this.state
     
     // Frutiger Aero gradient background
-    const frutigerAeroGradient = userLayout?.backImage 
-      ? `linear-gradient(135deg, rgba(135, 206, 250, 0.3) 0%, rgba(144, 238, 144, 0.3) 50%, rgba(173, 216, 230, 0.3) 100%), url(${userLayout.backImage})`
-      : userLayout?.backColor 
-        ? `linear-gradient(135deg, rgba(135, 206, 250, 0.2) 0%, rgba(144, 238, 144, 0.2) 50%, rgba(173, 216, 230, 0.2) 100%), ${userLayout.backColor}`
-        : 'linear-gradient(135deg, #87CEEB 0%, #90EE90 50%, #ADD8E6 100%)'
+    const frutigerAeroGradient = getCustomGradient(userLayout)
 
     if (this.state.isSiteLoading) {
       return <LoadingPage />
@@ -115,7 +115,7 @@ export default class Body extends Component {
           backgroundSize: 'cover',
           backgroundPosition: 'center',
           backgroundAttachment: 'fixed',
-          color: userLayout ? userLayout.fontBodyColor : 'black',
+          color: getTextColor(userLayout),
           pt: { xs: 0, sm: 0, md: 0 },
           pb: { xs: 2, sm: 2, md: 1.5 },
           px: { xs: 0, sm: 0, md: 0 },
@@ -203,7 +203,7 @@ export default class Body extends Component {
                   gridRow: { xs: 'auto', md: '3' },
                 }}
               >
-                <MainBlog blogs={blogs} id={_id} userLayout={userLayout} />
+                <MainBlog blogs={blogs} id={_id} />
               </Box>
             )}
 
@@ -239,3 +239,9 @@ export default class Body extends Component {
     )
   }
 }
+
+const mapStateToProps = (state) => ({
+  userLayoutFromRedux: state.userData.userLayout
+})
+
+export default connect(mapStateToProps)(Body)

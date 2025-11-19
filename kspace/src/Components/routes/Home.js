@@ -1,12 +1,22 @@
 import React, { useEffect, useState } from 'react'
+import { useSelector } from 'react-redux'
 import EditButton from '../layout/EditButton'
 import { useLocation } from 'react-router-dom'
 import axios from 'axios'
 import { Container, Box, CircularProgress, Alert, Typography, Card, CardContent } from '@mui/material'
+import {
+  glassmorphismStyle,
+  appColors,
+  getCustomGradient,
+  getTextColor,
+  getHeadingStyle,
+  getBodyTextStyle,
+} from '../../styles'
 
 export default function Home() {
   const location = useLocation()
   const data = location.state
+  const userLayoutFromRedux = useSelector((state) => state.userData.userLayout)
   const [layout, setLayout] = useState(null)
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState(null)
@@ -76,19 +86,14 @@ export default function Home() {
   }
 
   if (loading) {
-    const glassmorphismStyle = {
-      background: 'rgba(255, 255, 255, 0.25)',
-      backdropFilter: 'blur(10px) saturate(180%)',
-      WebkitBackdropFilter: 'blur(10px) saturate(180%)',
-      border: '2px solid rgba(255, 255, 255, 0.3)',
-      borderRadius: '20px',
-      boxShadow: '0 8px 32px 0 rgba(31, 38, 135, 0.37)',
-    }
+    // Use userLayout from Redux if available (should be there if navigating from another page)
+    const userLayout = userLayoutFromRedux || layout
+    
     return (
       <Box
         sx={{
           minHeight: '100vh',
-          background: 'linear-gradient(135deg, #87CEEB 0%, #90EE90 50%, #ADD8E6 100%)',
+          background: getCustomGradient(userLayout),
           backgroundSize: 'cover',
           backgroundPosition: 'center',
           backgroundAttachment: 'fixed',
@@ -98,6 +103,7 @@ export default function Home() {
           pt: { xs: 2, sm: 3, md: 4 },
           pb: { xs: 2, sm: 3, md: 4 },
           px: { xs: 1, sm: 2, md: 3 },
+          color: getTextColor(userLayout),
         }}
       >
         <Container maxWidth="sm">
@@ -107,24 +113,22 @@ export default function Home() {
                 size={60} 
                 sx={{ 
                   mb: 2,
-                  color: 'rgba(0, 0, 0, 0.7)',
+                  color: appColors.textPrimary,
                 }} 
               />
               <Typography 
                 variant="h6" 
-                sx={{
-                  fontFamily: "'Michroma', sans-serif",
-                  fontWeight: 'bold',
-                  mb: 1,
-                }}
+                sx={getHeadingStyle(userLayout, 'h1')}
               >
                 Loading...
               </Typography>
               <Typography 
                 variant="body2" 
                 sx={{
-                  fontFamily: "'Michroma', sans-serif",
-                  color: 'rgba(0, 0, 0, 0.7)',
+                  ...getBodyTextStyle(userLayout, {
+                    fontStyle: 'italic',
+                    opacity: 0.8,
+                  }),
                 }}
               >
                 Loading your homepage...

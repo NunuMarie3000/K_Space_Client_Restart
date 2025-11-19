@@ -1,8 +1,11 @@
 import React, { useState } from 'react'
+import { useSelector } from 'react-redux'
 import { Dialog, DialogTitle, DialogContent, DialogActions, TextField, Button, Typography } from '@mui/material'
 import axios from 'axios'
+import { modalPaperStyle, modalTitleStyle, modalTextFieldStyle, modalButtonStyle, getModalPrimaryButtonStyle, getBodyTextStyle } from '../../../styles'
 
 export default function EditAboutMe({ isEditBtnClicked, handleClick, aboutMe, id, getAboutMe }) {
+  const userLayout = useSelector((state) => state.userData.userLayout)
   const [updatedAboutMe, setUpdate] = useState('')
   const [updatedImage, setImage] = useState('')
   const [updatedAlt, setAlt] = useState('')
@@ -49,17 +52,10 @@ export default function EditAboutMe({ isEditBtnClicked, handleClick, aboutMe, id
       maxWidth="sm"
       fullWidth
       PaperProps={{
-        sx: {
-          background: 'rgba(255, 255, 255, 0.5)',
-          backdropFilter: 'blur(10px) saturate(180%)',
-          WebkitBackdropFilter: 'blur(10px) saturate(180%)',
-          border: '2px solid rgba(255, 255, 255, 0.4)',
-          borderRadius: '20px',
-          boxShadow: '0 8px 32px 0 rgba(31, 38, 135, 0.37)',
-        }
+        sx: modalPaperStyle
       }}
     >
-      <DialogTitle sx={{ fontFamily: "'Michroma', sans-serif", fontWeight: 'bold' }}>
+      <DialogTitle sx={modalTitleStyle}>
         Edit About Me
       </DialogTitle>
       <DialogContent>
@@ -72,19 +68,7 @@ export default function EditAboutMe({ isEditBtnClicked, handleClick, aboutMe, id
             multiline
             rows={4}
             margin="normal"
-            sx={{
-              '& .MuiOutlinedInput-root': {
-                fontFamily: "'Michroma', sans-serif",
-                background: 'rgba(255, 255, 255, 0.3)',
-                backdropFilter: 'blur(5px)',
-                '& fieldset': {
-                  border: '1px solid rgba(255, 255, 255, 0.4)',
-                },
-                '&:hover fieldset': {
-                  border: '1px solid rgba(255, 255, 255, 0.5)',
-                },
-              },
-            }}
+            sx={modalTextFieldStyle}
           />
           <TextField
             fullWidth
@@ -93,19 +77,7 @@ export default function EditAboutMe({ isEditBtnClicked, handleClick, aboutMe, id
             onChange={(e) => setImage(e.target.value)}
             placeholder="Image url: http://www.example.com/image.jpg"
             margin="normal"
-            sx={{
-              '& .MuiOutlinedInput-root': {
-                fontFamily: "'Michroma', sans-serif",
-                background: 'rgba(255, 255, 255, 0.3)',
-                backdropFilter: 'blur(5px)',
-                '& fieldset': {
-                  border: '1px solid rgba(255, 255, 255, 0.4)',
-                },
-                '&:hover fieldset': {
-                  border: '1px solid rgba(255, 255, 255, 0.5)',
-                },
-              },
-            }}
+            sx={modalTextFieldStyle}
           />
           <TextField
             fullWidth
@@ -114,21 +86,19 @@ export default function EditAboutMe({ isEditBtnClicked, handleClick, aboutMe, id
             onChange={(e) => setAlt(e.target.value)}
             placeholder="What is this an image of?"
             margin="normal"
-            sx={{
-              '& .MuiOutlinedInput-root': {
-                fontFamily: "'Michroma', sans-serif",
-                background: 'rgba(255, 255, 255, 0.3)',
-                backdropFilter: 'blur(5px)',
-                '& fieldset': {
-                  border: '1px solid rgba(255, 255, 255, 0.4)',
-                },
-                '&:hover fieldset': {
-                  border: '1px solid rgba(255, 255, 255, 0.5)',
-                },
-              },
-            }}
+            sx={modalTextFieldStyle}
           />
-          <Typography variant="caption" sx={{ mt: 1, display: 'block', fontStyle: 'italic', color: 'text.secondary' }}>
+          <Typography 
+            variant="caption" 
+            sx={{
+              ...getBodyTextStyle(userLayout, {
+                mt: 1,
+                display: 'block',
+                fontStyle: 'italic',
+                opacity: 0.8,
+              }),
+            }}
+          >
             What is this an image of?
           </Typography>
         </form>
@@ -136,25 +106,14 @@ export default function EditAboutMe({ isEditBtnClicked, handleClick, aboutMe, id
       <DialogActions sx={{ p: 2 }}>
         <Button 
           onClick={handleClick}
-          sx={{
-            fontFamily: "'Michroma', sans-serif",
-            color: 'text.primary',
-          }}
+          sx={modalButtonStyle}
         >
           Cancel
         </Button>
         <Button 
           onClick={handleSubmit}
           variant="contained"
-          sx={{
-            fontFamily: "'Michroma', sans-serif",
-            background: 'linear-gradient(135deg, rgba(135, 206, 250, 0.6) 0%, rgba(144, 238, 144, 0.6) 100%)',
-            border: '1px solid rgba(255, 255, 255, 0.5)',
-            color: 'text.primary',
-            '&:hover': {
-              background: 'linear-gradient(135deg, rgba(135, 206, 250, 0.8) 0%, rgba(144, 238, 144, 0.8) 100%)',
-            },
-          }}
+          sx={getModalPrimaryButtonStyle(userLayout)}
         >
           Submit
         </Button>

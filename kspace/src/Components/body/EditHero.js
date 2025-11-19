@@ -3,6 +3,7 @@ import { Dialog, DialogTitle, DialogContent, DialogActions, TextField, Button } 
 import { useDispatch, useSelector } from 'react-redux'
 import { updateUserLayout } from '../../store/userDataSlice'
 import axios from 'axios'
+import { modalPaperStyle, modalTitleStyle, modalTextFieldStyle, modalButtonStyle, getModalPrimaryButtonStyle } from '../../styles'
 
 export default function EditHero({ isEditBtnClicked, handleClick }) {
   const dispatch = useDispatch()
@@ -55,17 +56,10 @@ export default function EditHero({ isEditBtnClicked, handleClick }) {
       maxWidth="sm"
       fullWidth
       PaperProps={{
-        sx: {
-          background: 'rgba(255, 255, 255, 0.5)',
-          backdropFilter: 'blur(10px) saturate(180%)',
-          WebkitBackdropFilter: 'blur(10px) saturate(180%)',
-          border: '2px solid rgba(255, 255, 255, 0.4)',
-          borderRadius: '20px',
-          boxShadow: '0 8px 32px 0 rgba(31, 38, 135, 0.37)',
-        }
+        sx: modalPaperStyle
       }}
     >
-      <DialogTitle sx={{ fontFamily: "'Michroma', sans-serif", fontWeight: 'bold' }}>
+      <DialogTitle sx={modalTitleStyle}>
         Edit Hero Images
       </DialogTitle>
       <DialogContent>
@@ -77,19 +71,7 @@ export default function EditHero({ isEditBtnClicked, handleClick }) {
             onChange={(e) => setHeroImg1(e.target.value)}
             placeholder="Image url: http://www.example.com/image.jpg"
             margin="normal"
-            sx={{
-              '& .MuiOutlinedInput-root': {
-                fontFamily: "'Michroma', sans-serif",
-                background: 'rgba(255, 255, 255, 0.3)',
-                backdropFilter: 'blur(5px)',
-                '& fieldset': {
-                  border: '1px solid rgba(255, 255, 255, 0.4)',
-                },
-                '&:hover fieldset': {
-                  border: '1px solid rgba(255, 255, 255, 0.5)',
-                },
-              },
-            }}
+            sx={modalTextFieldStyle}
           />
           <TextField
             fullWidth
@@ -98,19 +80,7 @@ export default function EditHero({ isEditBtnClicked, handleClick }) {
             onChange={(e) => setAlt1(e.target.value)}
             placeholder="This is a picture of..."
             margin="normal"
-            sx={{
-              '& .MuiOutlinedInput-root': {
-                fontFamily: "'Michroma', sans-serif",
-                background: 'rgba(255, 255, 255, 0.3)',
-                backdropFilter: 'blur(5px)',
-                '& fieldset': {
-                  border: '1px solid rgba(255, 255, 255, 0.4)',
-                },
-                '&:hover fieldset': {
-                  border: '1px solid rgba(255, 255, 255, 0.5)',
-                },
-              },
-            }}
+            sx={modalTextFieldStyle}
           />
           <TextField
             fullWidth
@@ -119,19 +89,7 @@ export default function EditHero({ isEditBtnClicked, handleClick }) {
             onChange={(e) => setHeroImg2(e.target.value)}
             placeholder="Image url: http://www.example.com/image.jpg"
             margin="normal"
-            sx={{
-              '& .MuiOutlinedInput-root': {
-                fontFamily: "'Michroma', sans-serif",
-                background: 'rgba(255, 255, 255, 0.3)',
-                backdropFilter: 'blur(5px)',
-                '& fieldset': {
-                  border: '1px solid rgba(255, 255, 255, 0.4)',
-                },
-                '&:hover fieldset': {
-                  border: '1px solid rgba(255, 255, 255, 0.5)',
-                },
-              },
-            }}
+            sx={modalTextFieldStyle}
           />
           <TextField
             fullWidth
@@ -140,44 +98,21 @@ export default function EditHero({ isEditBtnClicked, handleClick }) {
             onChange={(e) => setAlt2(e.target.value)}
             placeholder="This is a picture of..."
             margin="normal"
-            sx={{
-              '& .MuiOutlinedInput-root': {
-                fontFamily: "'Michroma', sans-serif",
-                background: 'rgba(255, 255, 255, 0.3)',
-                backdropFilter: 'blur(5px)',
-                '& fieldset': {
-                  border: '1px solid rgba(255, 255, 255, 0.4)',
-                },
-                '&:hover fieldset': {
-                  border: '1px solid rgba(255, 255, 255, 0.5)',
-                },
-              },
-            }}
+            sx={modalTextFieldStyle}
           />
         </form>
       </DialogContent>
       <DialogActions sx={{ p: 2 }}>
         <Button 
           onClick={handleClick}
-          sx={{
-            fontFamily: "'Michroma', sans-serif",
-            color: 'text.primary',
-          }}
+          sx={modalButtonStyle}
         >
           Cancel
         </Button>
         <Button 
           onClick={handleSubmit}
           variant="contained"
-          sx={{
-            fontFamily: "'Michroma', sans-serif",
-            background: 'linear-gradient(135deg, rgba(135, 206, 250, 0.6) 0%, rgba(144, 238, 144, 0.6) 100%)',
-            border: '1px solid rgba(255, 255, 255, 0.5)',
-            color: 'text.primary',
-            '&:hover': {
-              background: 'linear-gradient(135deg, rgba(135, 206, 250, 0.8) 0%, rgba(144, 238, 144, 0.8) 100%)',
-            },
-          }}
+          sx={getModalPrimaryButtonStyle(userLayout)}
         >
           Submit
         </Button>

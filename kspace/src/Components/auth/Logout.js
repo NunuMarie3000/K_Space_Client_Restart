@@ -1,27 +1,33 @@
 import React from 'react'
+import { useSelector } from 'react-redux'
 import { Button } from '@mui/material'
 import LogoutIcon from '@mui/icons-material/Logout'
+import { getChipGradient, typography, getTextColor } from '../../styles'
 
 export default function Logout({logout}) {
+  const userLayout = useSelector((state) => state.userData.userLayout)
+  const chipGradient = getChipGradient(userLayout, 0.6)
+  const hoverGradient = getChipGradient(userLayout, 0.8)
+  
   return (
     <Button
       onClick={logout}
       variant="contained"
       startIcon={<LogoutIcon />}
       sx={{
-        fontFamily: "'Michroma', sans-serif",
+        ...typography,
         fontSize: { xs: '0.75rem', sm: '0.875rem' },
         fontWeight: 600,
-        background: 'linear-gradient(135deg, rgba(135, 206, 250, 0.6) 0%, rgba(144, 238, 144, 0.6) 100%)',
+        background: chipGradient,
         border: '1px solid rgba(255, 255, 255, 0.5)',
-        color: 'text.primary',
+        color: getTextColor(userLayout),
         boxShadow: '0 2px 8px rgba(0,0,0,0.15)',
         borderRadius: '12px',
         textTransform: 'none',
         px: { xs: 1.5, sm: 2 },
         py: { xs: 0.75, sm: 1 },
         '&:hover': {
-          background: 'linear-gradient(135deg, rgba(135, 206, 250, 0.8) 0%, rgba(144, 238, 144, 0.8) 100%)',
+          background: hoverGradient,
           transform: 'translateY(-2px)',
           boxShadow: '0 4px 12px rgba(0,0,0,0.25)',
         },

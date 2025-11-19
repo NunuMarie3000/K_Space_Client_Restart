@@ -1,9 +1,12 @@
 import React, { useState, useEffect } from 'react'
+import { useSelector } from 'react-redux'
 import { Card, CardContent, CardActions, Typography } from '@mui/material'
 import EditModal from './edit/EditModal'
 import DeleteBlog from './edit/DeleteBlog'
+import { glassmorphismStyle, appColors, getBodyTextStyle } from '../../../styles'
 
 export default function BlogEntry({ title, date_of_entry, date_of_update, body, blogId, authorId, getBlogs, autoEdit}) {
+  const userLayout = useSelector((state) => state.userData.userLayout)
   const [editMode, setEditMode] = useState(false)
 
   const toggleEditMode = () => {
@@ -17,42 +20,39 @@ export default function BlogEntry({ title, date_of_entry, date_of_update, body, 
     }
   }, [autoEdit])
 
-  // Frutiger Aero glassmorphism styling
-  const glassmorphismStyle = {
-    background: 'rgba(255, 255, 255, 0.25)',
-    backdropFilter: 'blur(10px) saturate(180%)',
-    WebkitBackdropFilter: 'blur(10px) saturate(180%)',
-    border: '2px solid rgba(255, 255, 255, 0.3)',
-    borderRadius: '20px',
-    boxShadow: '0 8px 32px 0 rgba(31, 38, 135, 0.37)',
+  // Blog entry card with hover effect
+  const blogCardStyle = {
+    ...glassmorphismStyle,
     transition: 'all 0.3s ease',
     '&:hover': {
       transform: 'translateY(-4px)',
-      boxShadow: '0 12px 40px 0 rgba(31, 38, 135, 0.5)',
+      boxShadow: `0 12px 40px 0 ${appColors.shadowColorHover}`,
     },
   }
 
   return (
-    <Card sx={glassmorphismStyle}>
+    <Card sx={blogCardStyle}>
       <CardContent sx={{ p: { xs: 2, sm: 3 } }}>
         <Typography 
           variant="h5" 
           component="h2"
           sx={{
-            fontFamily: "'Michroma', sans-serif",
-            fontWeight: 'bold',
-            mb: 1,
+            ...getBodyTextStyle(userLayout, {
+              fontWeight: 'bold',
+              mb: 1,
+            }),
           }}
         >
           {title}
         </Typography>
         <Typography 
           variant="body2" 
-          color="text.secondary"
           sx={{
-            fontFamily: "'Michroma', sans-serif",
-            mb: 2,
-            fontStyle: 'italic',
+            ...getBodyTextStyle(userLayout, {
+              mb: 2,
+              fontStyle: 'italic',
+              opacity: 0.8,
+            }),
           }}
         >
           Posted: {date_of_entry}
@@ -66,10 +66,11 @@ export default function BlogEntry({ title, date_of_entry, date_of_update, body, 
         <Typography 
           variant="body1"
           sx={{
-            fontFamily: "'Michroma', sans-serif",
-            lineHeight: 1.6,
-            whiteSpace: 'pre-wrap',
-            mb: 2,
+            ...getBodyTextStyle(userLayout, {
+              lineHeight: 1.6,
+              whiteSpace: 'pre-wrap',
+              mb: 2,
+            }),
           }}
         >
           {body}

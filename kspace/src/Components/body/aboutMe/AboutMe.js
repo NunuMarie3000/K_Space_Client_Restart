@@ -1,9 +1,11 @@
 // this will have about info, i need some default text here, the user wont have it until they create an account and edit this for the first time
 import React, { Component } from 'react'
+import { connect } from 'react-redux'
 import EditAboutMe from './EditAboutMe'
 import { Card, CardContent, Typography, Box } from '@mui/material'
+import { glassmorphismWithOverlay, getBodyTextStyle } from '../../../styles'
 
-export default class AboutMe extends Component {
+class AboutMe extends Component {
   constructor(props) {
     super(props)
   
@@ -17,44 +19,23 @@ export default class AboutMe extends Component {
   }
   
   render() {
-    const { aboutMe, id, getAboutMe } = this.props
+    const { aboutMe, id, getAboutMe, userLayout } = this.props
     const { isEditBtnClicked } = this.state
-
-    // Frutiger Aero glassmorphism styling
-    const glassmorphismStyle = {
-      background: 'rgba(255, 255, 255, 0.25)',
-      backdropFilter: 'blur(10px) saturate(180%)',
-      WebkitBackdropFilter: 'blur(10px) saturate(180%)',
-      border: '2px solid rgba(255, 255, 255, 0.3)',
-      borderRadius: '20px',
-      boxShadow: '0 8px 32px 0 rgba(31, 38, 135, 0.37)',
-      position: 'relative',
-      overflow: 'hidden',
-      '&::before': {
-        content: '""',
-        position: 'absolute',
-        top: 0,
-        left: 0,
-        right: 0,
-        height: '30%',
-        background: 'linear-gradient(180deg, rgba(255, 255, 255, 0.4) 0%, transparent 100%)',
-        pointerEvents: 'none',
-      }
-    }
 
     return (
       <>
-        <Card sx={glassmorphismStyle}>
+        <Card sx={glassmorphismWithOverlay}>
           <CardContent sx={{ position: 'relative', zIndex: 1 }}>
             <Typography 
               variant="h5" 
               component="h5" 
               sx={{ 
                 fontSize: { xs: '1.25rem', sm: '1.5rem' },
-                fontFamily: "'Michroma', sans-serif",
-                mb: 2,
-                fontWeight: 'bold',
-                textShadow: '0 2px 4px rgba(0,0,0,0.1)'
+                ...getBodyTextStyle(userLayout, {
+                  mb: 2,
+                  fontWeight: 'bold',
+                  textShadow: '0 2px 4px rgba(0,0,0,0.1)'
+                }),
               }}
             >
               About Me
@@ -62,9 +43,11 @@ export default class AboutMe extends Component {
             <Typography 
               variant="body1" 
               sx={{ 
-                mb: 2,
-                fontSize: { xs: '0.9rem', sm: '1rem' },
-                lineHeight: 1.8
+                ...getBodyTextStyle(userLayout, {
+                  mb: 2,
+                  fontSize: { xs: '0.9rem', sm: '1rem' },
+                  lineHeight: 1.8
+                }),
               }}
             >
               {aboutMe.about_me}
@@ -117,3 +100,9 @@ export default class AboutMe extends Component {
     )
   }
 }
+
+const mapStateToProps = (state) => ({
+  userLayout: state.userData.userLayout
+})
+
+export default connect(mapStateToProps)(AboutMe)

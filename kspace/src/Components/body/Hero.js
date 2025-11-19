@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 import { useSelector } from 'react-redux'
 import { Card, CardContent, Box } from '@mui/material'
 import EditHero from './EditHero'
+import { glassmorphismWithOverlay } from '../../styles'
 
 // user will have choice of one or two images, if one, render the img as a multiple, if two, render both images
 // or maybe not, we'll see
@@ -17,32 +18,10 @@ export default function Hero() {
   const handleClick = () => {
     setIsEditBtnClicked(!isEditBtnClicked)
   }
-  
-  // Frutiger Aero glassmorphism styling
-  const glassmorphismStyle = {
-    background: 'rgba(255, 255, 255, 0.25)',
-    backdropFilter: 'blur(10px) saturate(180%)',
-    WebkitBackdropFilter: 'blur(10px) saturate(180%)',
-    border: '2px solid rgba(255, 255, 255, 0.3)',
-    borderRadius: '20px',
-    boxShadow: '0 8px 32px 0 rgba(31, 38, 135, 0.37)',
-    position: 'relative',
-    overflow: 'hidden',
-    '&::before': {
-      content: '""',
-      position: 'absolute',
-      top: 0,
-      left: 0,
-      right: 0,
-      height: '30%',
-      background: 'linear-gradient(180deg, rgba(255, 255, 255, 0.4) 0%, transparent 100%)',
-      pointerEvents: 'none',
-    }
-  }
 
   return (
     <>
-    <Card sx={glassmorphismStyle}>
+    <Card sx={glassmorphismWithOverlay}>
       <CardContent sx={{ position: 'relative', zIndex: 1, p: { xs: 1, sm: 2 } }}>
         <Box 
           sx={{ 

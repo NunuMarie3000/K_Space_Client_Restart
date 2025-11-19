@@ -1,10 +1,13 @@
 import axios from 'axios'
 import React, { useState } from 'react'
-import { Modal, Button, Form } from 'react-bootstrap'
+import { useSelector } from 'react-redux'
+import { Dialog, DialogTitle, DialogContent, DialogActions, TextField, Button } from '@mui/material'
+import { modalPaperStyle, modalTitleStyle, modalTextFieldStyle, modalButtonStyle, getModalPrimaryButtonStyle } from '../../../../styles'
 // here is where i make post request to server to create new blog entry
 // perhaps another modal
 
 export default function NewBlogEntry({ isAddBtnClicked, handleClick, author, getBlogs }) {
+  const userLayout = useSelector((state) => state.userData.userLayout)
   const [title, setTitle] = useState('')
   const [body, setBody] = useState('')
 
@@ -25,6 +28,9 @@ export default function NewBlogEntry({ isAddBtnClicked, handleClick, author, get
       await axios.post(url, newPost)
       getBlogs()
       handleClose()
+      // Reset form
+      setTitle('')
+      setBody('')
       // call whatever function that gets all posts
     } catch (error) {
       console.log(error.message)
@@ -32,36 +38,59 @@ export default function NewBlogEntry({ isAddBtnClicked, handleClick, author, get
   }
 
   return (
-    <>
-      <Modal show={isAddBtnClicked} onHide={handleClose}>
-        <Modal.Header closeButton>
-          <Modal.Title>New Post</Modal.Title>
-        </Modal.Header>
-        <Modal.Body>
-
-          <Form onSubmit={handleSubmit} >
-
-            <Form.Group className="mb-3" controlId="post_title">
-              <Form.Label>Title</Form.Label>
-              <Form.Control type="text" required placeholder='I made art today...' onChange={(e)=>setTitle(e.target.value)} />
-            </Form.Group>
-
-            <Form.Group className="mb-3" controlId="post_body">
-              <Form.Label>Body</Form.Label>
-              <Form.Control as="textarea" rows={3}  type="text" required placeholder='I crafted a beautiful painting!' onChange={(e)=>setBody(e.target.value)} />
-            </Form.Group>
-
-            <Button variant="primary" type="submit">
-              Submit
-            </Button>
-          </Form>
-        </Modal.Body>
-        <Modal.Footer>
-          <Button variant="primary" onClick={handleClose}>
-            Close
-          </Button>
-        </Modal.Footer>
-      </Modal>
-    </>
+    <Dialog 
+      open={isAddBtnClicked} 
+      onClose={handleClose}
+      maxWidth="sm"
+      fullWidth
+      PaperProps={{
+        sx: modalPaperStyle
+      }}
+    >
+      <DialogTitle sx={modalTitleStyle}>
+        New Post
+      </DialogTitle>
+      <DialogContent>
+        <form onSubmit={handleSubmit}>
+          <TextField
+            fullWidth
+            label="Title"
+            value={title}
+            onChange={(e) => setTitle(e.target.value)}
+            placeholder="I made art today..."
+            required
+            margin="normal"
+            sx={modalTextFieldStyle}
+          />
+          <TextField
+            fullWidth
+            label="Body"
+            value={body}
+            onChange={(e) => setBody(e.target.value)}
+            placeholder="I crafted a beautiful painting!"
+            required
+            multiline
+            rows={4}
+            margin="normal"
+            sx={modalTextFieldStyle}
+          />
+        </form>
+      </DialogContent>
+      <DialogActions sx={{ p: 2 }}>
+        <Button 
+          onClick={handleClose}
+          sx={modalButtonStyle}
+        >
+          Close
+        </Button>
+        <Button 
+          onClick={handleSubmit}
+          variant="contained"
+          sx={getModalPrimaryButtonStyle(userLayout)}
+        >
+          Submit
+        </Button>
+      </DialogActions>
+    </Dialog>
   )
 }

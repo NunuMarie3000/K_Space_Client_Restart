@@ -1,15 +1,16 @@
 import axios from 'axios'
 import React, { useState } from 'react'
-import { Modal, Button, Form } from 'react-bootstrap'
+import { Dialog, DialogTitle, DialogContent, DialogActions, TextField, Button } from '@mui/material'
 import { useDispatch, useSelector } from 'react-redux'
 import { updateUserLayout } from '../../store/userDataSlice'
+import { modalPaperStyle, modalTitleStyle, modalTextFieldStyle, modalButtonStyle, getModalPrimaryButtonStyle } from '../../styles'
 
 export default function EditLayoutModal({ isEditBtnClicked, handleClick }) {
   const dispatch = useDispatch()
   const userLayout = useSelector((state) => state.userData.userLayout)
-  const [backgroundColor, setBackgroundColor] = useState('')
-  const [backgroundImage, setBackgroundImage] = useState('')
-  const [bodyColor, setBodyColor] = useState('')
+  const [backgroundColor, setBackgroundColor] = useState(null)
+  const [backgroundImage, setBackgroundImage] = useState(null)
+  const [bodyColor, setBodyColor] = useState(null)
 
   if (!userLayout) return null
 
@@ -17,17 +18,25 @@ export default function EditLayoutModal({ isEditBtnClicked, handleClick }) {
     let sendBC
     let sendBI
     let sendBody
-    if (backgroundColor === '') {
+    // If state is null, user hasn't changed the field - keep existing value
+    // If state is empty string, user explicitly cleared it - set to null/empty
+    // If state has value, user changed it - use new value
+    if (backgroundColor === null) {
       sendBC = userLayout.backColor
     } else {
-      sendBC = backgroundColor
+      sendBC = backgroundColor.trim() === '' ? null : backgroundColor.trim()
     }
-    if (backgroundImage === '') {
+    if (backgroundImage === null) {
       sendBI = userLayout.backImage
-    } else { sendBI = backgroundImage }
-    if (bodyColor === '') {
+    } else {
+      // If user cleared the field (empty string), explicitly set to null to remove image
+      sendBI = backgroundImage.trim() === '' ? null : backgroundImage.trim()
+    }
+    if (bodyColor === null) {
       sendBody = userLayout.fontBodyColor
-    } else { sendBody = bodyColor }
+    } else {
+      sendBody = bodyColor.trim() === '' ? null : bodyColor.trim()
+    }
 
     return {
       backColor: sendBC, 
@@ -67,39 +76,65 @@ export default function EditLayoutModal({ isEditBtnClicked, handleClick }) {
   }
   const { backColor, backImage, fontBodyColor } = userLayout
   return (
-    <>
-      <Modal show={isEditBtnClicked} onHide={handleClick}>
-        <Modal.Header closeButton>
-          <Modal.Title>Edit Layout</Modal.Title>
-        </Modal.Header>
-        <Modal.Body>
-          <Form onSubmit={handleSubmit} >
-            <Form.Group className="mb-3" controlId="backgroundcolor">
-              <Form.Label>Background Color</Form.Label>
-              <Form.Control defaultValue={backColor} type="text" placeholder="Hex code: #fff" onChange={(e) => setBackgroundColor(e.target.value)} />
-            </Form.Group>
-
-            <Form.Group className="mb-3" controlId="backgroundimage">
-              <Form.Label>Background Image</Form.Label>
-              <Form.Control defaultValue={backImage} type="text" placeholder="Image url: http://www.asksfskd" onChange={(e) => setBackgroundImage(e.target.value)} />
-            </Form.Group>
-
-            <Form.Group className="mb-3" controlId="bodycolor">
-              <Form.Label>Text Color: Body</Form.Label>
-              <Form.Control defaultValue={fontBodyColor} type="text" placeholder="Hex code: #fff" onChange={(e) => setBodyColor(e.target.value)} />
-            </Form.Group>
-
-            <Button variant="primary" type="submit">
-              Submit
-            </Button>
-          </Form>
-        </Modal.Body>
-        <Modal.Footer>
-          <Button variant="secondary" onClick={handleClick}>
-            Close
-          </Button>
-        </Modal.Footer>
-      </Modal>
-    </>
+    <Dialog 
+      open={isEditBtnClicked} 
+      onClose={handleClick}
+      maxWidth="sm"
+      fullWidth
+      PaperProps={{
+        sx: modalPaperStyle
+      }}
+    >
+      <DialogTitle sx={modalTitleStyle}>
+        Edit Layout
+      </DialogTitle>
+      <DialogContent>
+        <form onSubmit={handleSubmit}>
+          <TextField
+            fullWidth
+            label="Background Color"
+            defaultValue={backColor}
+            placeholder="Hex code: #fff"
+            onChange={(e) => setBackgroundColor(e.target.value)}
+            margin="normal"
+            sx={modalTextFieldStyle}
+          />
+          <TextField
+            fullWidth
+            label="Background Image"
+            defaultValue={backImage || ''}
+            placeholder="Image url: http://www.example.com/image.jpg (leave empty to remove)"
+            onChange={(e) => setBackgroundImage(e.target.value)}
+            margin="normal"
+            sx={modalTextFieldStyle}
+            helperText="Leave empty to remove background image"
+          />
+          <TextField
+            fullWidth
+            label="Text Color: Body"
+            defaultValue={fontBodyColor}
+            placeholder="Hex code: #fff"
+            onChange={(e) => setBodyColor(e.target.value)}
+            margin="normal"
+            sx={modalTextFieldStyle}
+          />
+        </form>
+      </DialogContent>
+      <DialogActions sx={{ p: 2 }}>
+        <Button 
+          onClick={handleClick}
+          sx={modalButtonStyle}
+        >
+          Close
+        </Button>
+        <Button 
+          onClick={handleSubmit}
+          variant="contained"
+          sx={getModalPrimaryButtonStyle(userLayout)}
+        >
+          Submit
+        </Button>
+      </DialogActions>
+    </Dialog>
   )
 }

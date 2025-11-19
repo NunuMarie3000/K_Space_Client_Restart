@@ -1,10 +1,22 @@
 import React from 'react'
+import { useSelector } from 'react-redux'
 import { Box, Typography } from '@mui/material'
+import { getBodyTextStyle } from '../../../styles'
 
 export default function Latest({ blogs }) {
+  const userLayout = useSelector((state) => state.userData.userLayout)
   if (!blogs || blogs.length === 0) {
     return (
-      <Typography variant="body2" sx={{ fontStyle: 'italic', color: 'text.secondary', textAlign: 'center' }}>
+      <Typography 
+        variant="body2" 
+        sx={{
+          ...getBodyTextStyle(userLayout, {
+            fontStyle: 'italic',
+            opacity: 0.8,
+            textAlign: 'center'
+          }),
+        }}
+      >
         No blog entries yet
       </Typography>
     )
@@ -25,10 +37,11 @@ export default function Latest({ blogs }) {
         variant="h6" 
         component="h5" 
         sx={{
-          fontFamily: "'Michroma', sans-serif",
-          mb: 2,
-          fontWeight: 'bold',
-          fontSize: { xs: '1rem', sm: '1.25rem' }
+          ...getBodyTextStyle(userLayout, {
+            mb: 2,
+            fontWeight: 'bold',
+            fontSize: { xs: '1rem', sm: '1.25rem' }
+          }),
         }}
       >
         {blogs[0].title}
@@ -36,9 +49,11 @@ export default function Latest({ blogs }) {
       <Typography 
         variant="body1" 
         sx={{ 
-          fontSize: { xs: '0.9rem', sm: '1rem' },
-          lineHeight: 1.8,
-          whiteSpace: 'pre-wrap'
+          ...getBodyTextStyle(userLayout, {
+            fontSize: { xs: '0.9rem', sm: '1rem' },
+            lineHeight: 1.8,
+            whiteSpace: 'pre-wrap'
+          }),
         }}
       >
         {blogs[0].body}

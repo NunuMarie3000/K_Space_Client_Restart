@@ -3,22 +3,21 @@ import { useSelector } from 'react-redux'
 import axios from 'axios'
 import { Box, Container, Card, CardContent, Typography, CircularProgress } from '@mui/material'
 import Footer from '../body/Footer'
+import {
+  glassmorphismStyle,
+  pageContainer,
+  appColors,
+  getCustomGradient,
+  getHeadingStyle,
+  getBodyTextStyle,
+  getTextColor,
+} from '../../styles'
 // this is where i'll get all my blogs for this user, won't be editable here, this will be public facing
 
 export default function Blog() {
   const [blogs, setBlogs] = useState('')
   const userLayout = useSelector((state) => state.userData.userLayout)
   const userId = useSelector((state) => state.userData.userId)
-
-  // Frutiger Aero glassmorphism styling
-  const glassmorphismStyle = {
-    background: 'rgba(255, 255, 255, 0.25)',
-    backdropFilter: 'blur(10px) saturate(180%)',
-    WebkitBackdropFilter: 'blur(10px) saturate(180%)',
-    border: '2px solid rgba(255, 255, 255, 0.3)',
-    borderRadius: '20px',
-    boxShadow: '0 8px 32px 0 rgba(31, 38, 135, 0.37)',
-  }
 
   const getBlogs = async () => {
     if (!userId) return
@@ -37,30 +36,19 @@ export default function Blog() {
     //eslint-disable-next-line
   }, [userId])
 
-  // Frutiger Aero gradient background
-  const frutigerAeroGradient = userLayout?.backImage 
-    ? `linear-gradient(135deg, rgba(135, 206, 250, 0.3) 0%, rgba(144, 238, 144, 0.3) 50%, rgba(173, 216, 230, 0.3) 100%), url(${userLayout.backImage})`
-    : userLayout?.backColor 
-      ? `linear-gradient(135deg, rgba(135, 206, 250, 0.2) 0%, rgba(144, 238, 144, 0.2) 50%, rgba(173, 216, 230, 0.2) 100%), ${userLayout.backColor}`
-      : 'linear-gradient(135deg, #87CEEB 0%, #90EE90 50%, #ADD8E6 100%)'
+  // Blog card with hover effect
+  const blogCardStyle = {
+    ...glassmorphismStyle,
+    transition: 'all 0.3s ease',
+    '&:hover': {
+      transform: 'translateY(-4px)',
+      boxShadow: `0 12px 40px 0 ${appColors.shadowColorHover}`,
+    },
+  }
 
   if (!userLayout) {
     return (
-      <Box
-        sx={{
-          minHeight: '100vh',
-          background: 'linear-gradient(135deg, #87CEEB 0%, #90EE90 50%, #ADD8E6 100%)',
-          backgroundSize: 'cover',
-          backgroundPosition: 'center',
-          backgroundAttachment: 'fixed',
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-          pt: { xs: 2, sm: 3, md: 4 },
-          pb: { xs: 2, sm: 3, md: 4 },
-          px: { xs: 1, sm: 2, md: 3 },
-        }}
-      >
+      <Box sx={pageContainer}>
         <Container maxWidth="sm">
           <Card sx={glassmorphismStyle}>
             <CardContent sx={{ p: { xs: 4, sm: 5, md: 6 }, textAlign: 'center' }}>
@@ -68,7 +56,7 @@ export default function Blog() {
                 size={60} 
                 sx={{ 
                   mb: 2,
-                  color: 'rgba(0, 0, 0, 0.7)',
+                  color: appColors.textPrimary,
                 }} 
               />
               <Typography 
@@ -76,6 +64,7 @@ export default function Blog() {
                 sx={{
                   fontFamily: "'Michroma', sans-serif",
                   fontWeight: 'bold',
+                  color: appColors.textPrimary,
                 }}
               >
                 Loading...
@@ -91,11 +80,11 @@ export default function Blog() {
     <Box
       sx={{
         minHeight: '100vh',
-        background: frutigerAeroGradient,
+        background: getCustomGradient(userLayout),
         backgroundSize: 'cover',
         backgroundPosition: 'center',
         backgroundAttachment: 'fixed',
-        color: userLayout ? userLayout.fontBodyColor : 'black',
+        color: getTextColor(userLayout),
         pt: { xs: 2, sm: 3, md: 4 },
         pb: { xs: 2, sm: 3, md: 4 },
         px: { xs: 1, sm: 2, md: 3 },
@@ -106,11 +95,8 @@ export default function Blog() {
           variant="h3" 
           component="h1"
           sx={{
-            fontFamily: "'Michroma', sans-serif",
-            fontWeight: 'bold',
+            ...getHeadingStyle(userLayout, 'h1'),
             mb: 3,
-            textAlign: 'center',
-            textShadow: '0 2px 10px rgba(255, 255, 255, 0.3)',
           }}
         >
           Blog Posts
@@ -121,34 +107,29 @@ export default function Blog() {
             blogs.map(blog => (
               <Card 
                 key={blog._id} 
-                sx={{
-                  ...glassmorphismStyle,
-                  transition: 'all 0.3s ease',
-                  '&:hover': {
-                    transform: 'translateY(-4px)',
-                    boxShadow: '0 12px 40px 0 rgba(31, 38, 135, 0.5)',
-                  },
-                }}
+                sx={blogCardStyle}
               >
                 <CardContent sx={{ p: { xs: 2, sm: 3 } }}>
                   <Typography 
                     variant="h5" 
                     component="h2"
                     sx={{
-                      fontFamily: "'Michroma', sans-serif",
-                      fontWeight: 'bold',
-                      mb: 1,
+                      ...getBodyTextStyle(userLayout, {
+                        fontWeight: 'bold',
+                        mb: 1,
+                      }),
                     }}
                   >
                     {blog.title}
                   </Typography>
                   <Typography 
                     variant="body2" 
-                    color="text.secondary"
                     sx={{
-                      fontFamily: "'Michroma', sans-serif",
-                      mb: 2,
-                      fontStyle: 'italic',
+                      ...getBodyTextStyle(userLayout, {
+                        mb: 2,
+                        fontStyle: 'italic',
+                        opacity: 0.8,
+                      }),
                     }}
                   >
                     Posted: {blog.date_of_entry}
@@ -156,9 +137,10 @@ export default function Blog() {
                   <Typography 
                     variant="body1"
                     sx={{
-                      fontFamily: "'Michroma', sans-serif",
-                      lineHeight: 1.6,
-                      whiteSpace: 'pre-wrap',
+                      ...getBodyTextStyle(userLayout, {
+                        lineHeight: 1.6,
+                        whiteSpace: 'pre-wrap',
+                      }),
                     }}
                   >
                     {blog.body}
@@ -172,9 +154,10 @@ export default function Blog() {
                 <Typography 
                   variant="body1"
                   sx={{
-                    fontFamily: "'Michroma', sans-serif",
-                    textAlign: 'center',
-                    fontStyle: 'italic',
+                    ...getBodyTextStyle(userLayout, {
+                      textAlign: 'center',
+                      fontStyle: 'italic',
+                    }),
                   }}
                 >
                   No blog posts yet. Check back soon!
