@@ -8,12 +8,10 @@ import {
   appColors,
   getCustomGradient,
   getHeadingStyle,
-  getBodyTextStyle,
   getTextColor,
 } from '../../styles'
 
 export default function Welcome({ userLayout }) {
-  console.log('userLayout', userLayout)
 
   if (!userLayout) {
     return (
